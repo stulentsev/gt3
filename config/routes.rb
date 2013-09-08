@@ -1,6 +1,19 @@
 Gt2::Application.routes.draw do
-  get 'heartbeat' => 'heartbeat#index'
+  get   'login' => 'sessions#new'
+  post  'logout' => 'sessions#destroy'
+  post  "sessions/create"
 
+  get   "users/edit"
+  post  "users/update"
+
+  get   'heartbeat' => 'heartbeat#index'
+
+  resources :apps
+  resources :charts
+
+  get 'profile' => 'users#profile'
+
+  root  'users#profile'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
@@ -41,7 +54,7 @@ Gt2::Application.routes.draw do
   #       get 'recent', on: :collection
   #     end
   #   end
-  
+
   # Example resource route with concerns:
   #   concern :toggleable do
   #     post 'toggle'

@@ -1,0 +1,19 @@
+%h2 Charts
+
+- if app.charts.present?
+  %table
+    %tr
+      %th Name
+      %th Config
+      - if edit
+        %th Actions
+    - app.charts.each do |chart|
+      %tr
+        %td= chart.name
+        %td= chart.config
+        - if edit
+          %td
+            = link_to 'Edit', edit_chart_path(chart)
+            = link_to 'Delete', chart_path(chart), method: :delete
+- else
+  No charts (yet)

@@ -1,0 +1,10 @@
+%h1
+  This is your profile,
+  = current_user.name
+
+
+= render :partial => 'apps'
+
+#new_app
+  = link_to 'Create new app', new_app_path
+

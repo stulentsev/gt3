@@ -1,0 +1,15 @@
+%h1 Create new chart
+
+= form_for @chart do |f|
+  = f.hidden_field :app_id, value: params[:app_id]
+
+  %p
+    = f.label :name
+    = f.text_field :name
+
+  %p
+    = f.label :config
+    = f.text_area :config
+
+  #submit
+    = f.submit

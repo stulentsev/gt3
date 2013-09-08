@@ -1,0 +1,5 @@
+%h1= @app.name
+
+= render partial: 'charts', locals: {app: @app, edit: false}
+
+= link_to 'Add new chart', new_chart_path(app_id: @app.id)
