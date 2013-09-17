@@ -64,6 +64,11 @@ GEM
       factory_girl (~> 4.2.0)
       railties (>= 3.0.0)
     ffi (1.9.0)
+    flatstrap-sass (2.3.1.0)
+      font-awesome-rails (~> 3.0.2.0)
+      sass (~> 3.2)
+    font-awesome-rails (3.0.2.0)
+      railties (>= 3.1)
     formatador (0.2.4)
     fuubar (1.1.0)
       rspec (~> 2.0)
@@ -123,6 +128,8 @@ GEM
       coderay (~> 1.0.5)
       method_source (~> 0.8)
       slop (~> 3.4)
+    quiet_assets (1.0.2)
+      railties (>= 3.1, < 5.0)
     rack (1.5.2)
     rack-test (0.6.2)
       rack (>= 1.0)
@@ -208,6 +215,8 @@ DEPENDENCIES
   capistrano-ext
   coffee-rails (~> 4.0.0)
   factory_girl_rails
+  flatstrap-sass
+  font-awesome-rails
   fuubar
   guard-rspec
   haml
@@ -216,6 +225,7 @@ DEPENDENCIES
   mongoid!
   mongoid-rspec
   pry
+  quiet_assets
   rails (= 4.0.0)
   redis
   rspec-rails

@@ -1,20 +1,20 @@
-%h2 Apps
+%h2= t('labels.apps')
 
 - if current_user.apps.present?
 
   %table
     %tr
-      %th Name
-      %th Status
-      %th Link
-      %th Actions
+      %th= t('helpers.label.app.name')
+      %th= t('helpers.label.app.status')
+      %th= t('helpers.label.app.link')
+      %th= t('helpers.actions')
     - current_user.apps.each do |app|
       %tr
         %td= app.name
         %td 'N/A'
-        %td= link_to 'Stats', app_path(app)
+        %td= link_to t('helpers.label.app.link'), app_stat_path(app)
         %td
-          = link_to 'Edit', edit_app_path(app)
-          = link_to 'Delete', app_path(app), method: :delete, :confirm => 'Are you sure?'
+          = link_to t('labels.edit'), edit_app_path(app)
+          = link_to t('labels.delete'), app_path(app), method: :delete, :confirm => 'Are you sure?'
 - else
-  You have no apps.
+  = t('labels.no_apps')

@@ -6,6 +6,9 @@ gem 'rails', '4.0.0'
 gem 'sass-rails', '~> 4.0.0'
 gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.0.0'
+#gem 'twitter-bootstrap-rails'
+gem 'flatstrap-sass'
+gem 'font-awesome-rails'
 
 gem 'inherited_resources'
 
@@ -32,6 +35,7 @@ group :development do
   gem 'pry'
   gem 'capistrano'
   gem 'capistrano-ext'
+  gem 'quiet_assets'
 end
 
 group :development, :test do

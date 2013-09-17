@@ -1,10 +1,7 @@
-%h1
-  This is your profile,
-  = current_user.name
-
+%h1= t('labels.profile_title', username: current_user.name)
 
 = render :partial => 'apps'
 
 #new_app
-  = link_to 'Create new app', new_app_path
+  = link_to t('helpers.submit.app.create'), new_app_path
 

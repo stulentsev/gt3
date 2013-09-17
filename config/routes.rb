@@ -1,4 +1,5 @@
 Gt2::Application.routes.draw do
+  get "stats/show"
   get   'login' => 'sessions#new'
   post  'logout' => 'sessions#destroy'
   post  "sessions/create"
@@ -8,7 +9,10 @@ Gt2::Application.routes.draw do
 
   get   'heartbeat' => 'heartbeat#index'
 
-  resources :apps
+  resources :apps do
+    resource :stat, only: [:show]
+  end
+
   resources :charts
 
   get 'profile' => 'users#profile'

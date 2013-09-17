@@ -6,4 +6,6 @@ class Chart
   field :config
 
   belongs_to :app
+
+  validates_presence_of :name, :config, :app_id
 end
