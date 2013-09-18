@@ -8,8 +8,12 @@ class EventSaver
   end
 
   def save
-    RawEntry.create(app_id: app_id, event_params: @event_params)
-    'ok'
+    if valid?
+      RawEntry.create(app_id: app_id, event_params: @event_params)
+      'ok'
+    else
+      'error'
+    end
   end
 
   private
