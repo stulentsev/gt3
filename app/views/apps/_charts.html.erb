@@ -33,5 +33,5 @@
  <% end %>
 
 <%= link_to t('helpers.submit.chart.create'),
-            new_chart_path(app_id: @app.id),
+            new_chart_path(chart: {app_id: @app.id}),
             :class => 'btn btn-primary' %>

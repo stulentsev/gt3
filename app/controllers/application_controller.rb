@@ -9,6 +9,10 @@ class ApplicationController < ActionController::Base
     redirect_to login_path unless current_user
   end
 
+  def render_json(json, http_status = :ok)
+    render json: json, content_type: 'application/json', status: http_status
+  end
+
   def current_user
     @current_user ||= User.find(session[:user_id]) if session[:user_id]
   end
