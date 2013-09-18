@@ -9,6 +9,11 @@ Gt2::Application.routes.draw do
 
   get   'heartbeat' => 'heartbeat#index'
 
+
+  namespace :api do
+    resources :events, only: [:create]
+  end
+
   resources :apps do
     resource :stat, only: [:show]
   end
