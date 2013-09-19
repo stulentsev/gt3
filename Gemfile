@@ -42,11 +42,11 @@ end
 group :development, :test do
   gem 'factory_girl_rails'
   gem 'zeus'
+  gem 'rspec-rails'
 end
 
 group :test do
   gem 'fuubar'
   gem 'guard-rspec'
   gem 'mongoid-rspec'
-  gem 'rspec-rails'
 end
