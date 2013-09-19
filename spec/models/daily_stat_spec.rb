@@ -42,7 +42,7 @@ describe DailyStat do
   describe '#unique_count_for' do
     context 'data for today' do
       it 'gets unique count for an event from redis' do
-        ds = DailyStat.new(_id: doc_id, stats: {event => {'unique' => 5}})
+        ds = DailyStat.new(_id: doc_id, app_id: app_id, stats: {event => {'unique' => 5}})
         3.times do
           Rails.configuration.redis_wrapper.add_event_unique(app_id, event, SecureRandom.hex(8))
         end

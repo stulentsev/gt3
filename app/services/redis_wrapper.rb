@@ -10,4 +10,10 @@ class RedisWrapper
     k = "event_uniques:#{app_id}:#{event}:#{t}"
     redis.sadd(k, user_id)
   end
+
+  def get_event_uniques(app_id, event)
+    t = Time.now.compact
+    k = "event_uniques:#{app_id}:#{event}:#{t}"
+    redis.scard(k)
+  end
 end

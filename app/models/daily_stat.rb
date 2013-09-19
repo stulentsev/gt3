@@ -26,10 +26,19 @@ class DailyStat
   end
 
   def unique_count_for(event)
-    stats.fetch_path(event, :unique)
+    if today_record?
+      Rails.configuration.redis_wrapper.get_event_uniques(app_id, event)
+    else
+      stats.fetch_path(event, :unique)
+    end
   end
 
   def subvalue_total_count_for(event, subvalue)
     counts.fetch_path(event, subvalue, :total)
+  end
+
+  private
+  def today_record?
+    _id =~ /.*_#{Time.now.compact}/
   end
 end

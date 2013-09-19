@@ -23,6 +23,7 @@ RSpec.configure do |config|
   # Clean/Reset Mongoid DB prior to running each test.
   config.before(:each) do
     Mongoid::Sessions.default.collections.select {|c| c.name !~ /system/ }.each(&:drop)
+    Rails.configuration.redis_wrapper.redis.flushdb
   end
 
   # If true, the base class of anonymous controllers will be inferred
