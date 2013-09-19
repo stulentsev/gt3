@@ -67,7 +67,10 @@ class EventSaver
     # TODO: push user_id to redis for uniq calculation
     Rails.configuration.redis_wrapper.add_event_unique(app_id, event, user_id)
 
-    {:$inc => {"stats.#{event}.total" => 1}}
+    {
+      :$inc => { "stats.#{event}.total" => 1 },
+      :$set => { app_id: app_id, date: Time.now.compact }
+    }
   end
 
   def update_subvalue

@@ -1,9 +1,8 @@
 class DailyStat
   include Mongoid::Document
 
-  field :_id, type: String, default: -> { "#{app_id}_#{date.compact}" }
   field :app_id, type: String
-  field :date, type: DateTime
+  field :date, type: String
 
   field :stats, type: Hash, default: {}
   field :counts, type: Hash, default: {}
@@ -15,14 +14,22 @@ class DailyStat
     # Use moped session directly to update multiple field atomically
 
     # session[:artists].find(name: "Syd Vicious").update(:$push => { instruments: { name: "Bass" }})
-    Mongoid::Sessions.default do |session|
+    Mongoid::Sessions.default.with do |session|
       coll = session[:daily_stats]
 
-      coll.where(_id: id).update(updates)
+      coll.where(_id: id).upsert(updates)
     end
   end
 
-  def total_for(event)
+  def total_count_for(event)
     stats.fetch_path(event, :total)
+  end
+
+  def unique_count_for(event)
+    stats.fetch_path(event, :unique)
+  end
+
+  def subvalue_total_count_for(event, subvalue)
+    counts.fetch_path(event, subvalue, :total)
   end
 end

@@ -20,6 +20,10 @@ RSpec.configure do |config|
   # config.mock_with :rr
   config.mock_with :rspec
 
+  # Clean/Reset Mongoid DB prior to running each test.
+  config.before(:each) do
+    Mongoid::Sessions.default.collections.select {|c| c.name !~ /system/ }.each(&:drop)
+  end
 
   # If true, the base class of anonymous controllers will be inferred
   # automatically. This will be the default behavior in future versions of

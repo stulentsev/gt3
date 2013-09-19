@@ -7,7 +7,7 @@ class RedisWrapper
 
   def add_event_unique(app_id, event, user_id)
     t = Time.now.compact
-    k = "event_uniques:#{app_id}:#{t}"
+    k = "event_uniques:#{app_id}:#{event}:#{t}"
     redis.sadd(k, user_id)
   end
 end

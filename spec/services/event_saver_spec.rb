@@ -59,8 +59,13 @@ describe EventSaver do
     describe 'forming update params' do
       let(:doc_id) { "#{app.id}_#{Time.now.compact}" }
 
+      it 'sets app_id and date' do
+        DailyStat.should_receive(:update_stats).with(doc_id, hash_including(:$set => {app_id: app.id, date: Time.now.compact}))
+        subject.save
+      end
+
       it 'updates total count' do
-        DailyStat.should_receive(:update_stats).with(doc_id, {:$inc => {"stats.#{event}.total" => 1}})
+        DailyStat.should_receive(:update_stats).with(doc_id, hash_including(:$inc => {"stats.#{event}.total" => 1}))
         subject.save
       end
 
@@ -76,7 +81,7 @@ describe EventSaver do
         }
 
         it 'updates counts for every subtype' do
-          DailyStat.should_receive(:update_stats).with(doc_id, {:$inc => hash_including({"counts.#{event}.total" => 1})})
+          DailyStat.should_receive(:update_stats).with(doc_id, hash_including(:$inc => hash_including({"counts.#{event}.total" => 1})))
           subject.save
         end
       end
@@ -88,8 +93,8 @@ describe EventSaver do
 
         it 'calculates aggregate values: min/max/avg/sum' do
           DailyStat.should_receive(:update_stats).with(doc_id,
-                                                       {:$inc => hash_including({"aggs.#{event}.sum" => 2,
-                                                                                 "aggs.#{event}.count" => 1})})
+                                                       hash_including(:$inc => hash_including({"aggs.#{event}.sum" => 2,
+                                                                                 "aggs.#{event}.count" => 1})))
           subject.save
         end
       end
