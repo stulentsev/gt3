@@ -13,15 +13,12 @@ class EventSaver
 
       # Collect all update operations and perform them at once, instead of firing several mongodb queries
       updates = update_common_parameters
-      updates.deep_merge(update_subvalue) if subvalue?
-      updates.deep_merge(update_numeric) if numeric?
 
-      #session[:artists].find(name: "Syd Vicious").update(:$push => { instruments: { name: "Bass" }})
-      Mongoid::Sessions.default do |session|
-        coll = session[:daily_stats]
+      updates.deep_merge!(update_subvalue) if subvalue?
+      updates.deep_merge!(update_numeric) if numeric?
 
-        coll.where(_id: "#{app_id}_#{Time.now.compact}").update(updates)
-      end
+      doc_id = "#{app_id}_#{Time.now.compact}"
+      DailyStat.update_stats(doc_id, updates)
 
       'ok'
     else
@@ -50,6 +47,10 @@ class EventSaver
     @event_params.fetch(:value)
   end
 
+  def user_id
+    @event_params.fetch(:user_id)
+  end
+
   def common_params_present?
     [:method, :app_id, :event].all?{|prm| @event_params.has_key?(prm)}
   end
@@ -63,9 +64,10 @@ class EventSaver
   end
 
   def update_common_parameters
-    {:$inc => {"stats.#{event}.total" => 1}}
-
     # TODO: push user_id to redis for uniq calculation
+    Rails.configuration.redis_wrapper.add_event_unique(app_id, event, user_id)
+
+    {:$inc => {"stats.#{event}.total" => 1}}
   end
 
   def update_subvalue

@@ -3,12 +3,13 @@ require 'spec_helper'
 describe EventSaver do
   let(:app) { create(:app) }
   let(:user_id) { SecureRandom.hex(8) }
+  let(:event) { 'loadApp' }
 
   let(:default_params) {
     {
       app_id: app.id,
       method: 'track_event',
-      event: 'loadApp',
+      event: event,
       user_id: user_id
     }
   }
@@ -36,6 +37,13 @@ describe EventSaver do
     let(:event_params) { default_params }
     subject { EventSaver.new(event_params) }
 
+    before do
+      redis = double().as_null_object
+
+      Rails.configuration.stub(redis_wrapper: RedisWrapper.new(redis))
+    end
+
+
     it 'returns a status string' do
       res = subject.save
 
@@ -48,18 +56,43 @@ describe EventSaver do
       }.to change{RawEntry.count}.by(1)
     end
 
-    it 'updates total count'
+    describe 'forming update params' do
+      let(:doc_id) { "#{app.id}_#{Time.now.compact}" }
 
-    it 'updates unique count'
+      it 'updates total count' do
+        DailyStat.should_receive(:update_stats).with(doc_id, {:$inc => {"stats.#{event}.total" => 1}})
+        subject.save
+      end
 
-    describe 'event with subtype' do
-      it 'updates counts for every subtype'
+      it 'updates unique count' do
+        Rails.configuration.redis_wrapper.should_receive(:add_event_unique).with(app.id, event, user_id)
 
-      it 'does not create too many subtypes'
-    end
+        subject.save
+      end
 
-    describe 'numerical event' do
-      it 'calculates aggregate values: min/max/avg/sum'
+      describe 'event with subtype' do
+        let(:event_params) {
+          default_params.merge(method: 'track_value', value: 'some subvalue')
+        }
+
+        it 'updates counts for every subtype' do
+          DailyStat.should_receive(:update_stats).with(doc_id, {:$inc => hash_including({"counts.#{event}.total" => 1})})
+          subject.save
+        end
+      end
+
+      describe 'numerical event' do
+        let(:event_params) {
+          default_params.merge(method: 'track_number', value: '2')
+        }
+
+        it 'calculates aggregate values: min/max/avg/sum' do
+          DailyStat.should_receive(:update_stats).with(doc_id,
+                                                       {:$inc => hash_including({"aggs.#{event}.sum" => 2,
+                                                                                 "aggs.#{event}.count" => 1})})
+          subject.save
+        end
+      end
     end
   end
 end

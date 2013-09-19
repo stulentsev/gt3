@@ -33,6 +33,7 @@ gem 'bcrypt-ruby', '~> 3.0.0'
 
 group :development do
   gem 'pry'
+  gem 'pry-debugger'
   gem 'capistrano'
   gem 'capistrano-ext'
   gem 'quiet_assets'
