@@ -23,6 +23,10 @@ Gt2::Application.routes.draw do
   get 'profile' => 'users#profile'
 
   root  'users#profile'
+
+  mount Sidekiq::Web => '/sidekiq'
+
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

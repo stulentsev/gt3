@@ -64,7 +64,6 @@ class EventSaver
   end
 
   def update_common_parameters
-    # TODO: push user_id to redis for uniq calculation
     Rails.configuration.redis_wrapper.add_event_unique(app_id, event, user_id)
 
     {

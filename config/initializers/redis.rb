@@ -1,4 +1,3 @@
-#TODO: read redis.yml and initialize redis here
 config = YAML.load_file('config/redis.yml')[Rails.env]
 redis = Redis.new(config)
 
