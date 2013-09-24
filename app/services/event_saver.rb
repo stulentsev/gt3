@@ -17,8 +17,14 @@ class EventSaver
       updates.deep_merge!(update_subvalue) if subvalue?
       updates.deep_merge!(update_numeric) if numeric?
 
-      doc_id = "#{app_id}_#{Time.now.compact}"
+      doc_id = "#{app_id}_#{time.compact}"
       DailyStat.update_stats(doc_id, updates)
+
+      # Update redis cache for min/max values (to be flushed later in background)
+      update_minmax_caches if numeric?
+
+      update_dau
+      update_mau
 
       'ok'
     else
@@ -35,6 +41,10 @@ class EventSaver
   end
 
   private
+  def time
+    @time ||= Time.now
+  end
+
   def app_id
     @event_params.fetch(:app_id)
   end
@@ -68,7 +78,7 @@ class EventSaver
 
     {
       :$inc => { "stats.#{event}.total" => 1 },
-      :$set => { app_id: app_id, date: Time.now.compact }
+      :$set => { app_id: app_id, date: time.compact }
     }
   end
 
@@ -80,9 +90,18 @@ class EventSaver
     { :$inc => { "aggs.#{event}.count" => 1,
                  "aggs.#{event}.sum"   => value.to_f
     } }
+  end
 
-    # TODO: fire off a sidekiq job to set min/max
-    # ds = find_daily_stat
-    # Sidekiq.enqueue(:update_min, app_id: app_id, time: Time.now, event: event, min: value, cur_min: ds.min_for('event'))
+  def update_minmax_caches
+    Rails.configuration.redis_wrapper.set_min_value(app_id, event, value)
+    Rails.configuration.redis_wrapper.set_max_value(app_id, event, value)
+  end
+
+  def update_dau
+    Rails.configuration.redis_wrapper.add_dau(app_id, user_id)
+  end
+
+  def update_mau
+    Rails.configuration.redis_wrapper.add_mau(app_id, user_id)
   end
 end

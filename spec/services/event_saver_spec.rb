@@ -75,6 +75,18 @@ describe EventSaver do
         subject.save
       end
 
+      it 'updates dau' do
+        Rails.configuration.redis_wrapper.should_receive(:add_dau).with(app.id, user_id)
+
+        subject.save
+      end
+
+      it 'updates mau' do
+        Rails.configuration.redis_wrapper.should_receive(:add_mau).with(app.id, user_id)
+
+        subject.save
+      end
+
       describe 'event with subtype' do
         let(:event_params) {
           default_params.merge(method: 'track_value', value: 'some subvalue')
@@ -95,6 +107,12 @@ describe EventSaver do
           DailyStat.should_receive(:update_stats).with(doc_id,
                                                        hash_including(:$inc => hash_including({"aggs.#{event}.sum" => 2,
                                                                                  "aggs.#{event}.count" => 1})))
+          subject.save
+        end
+
+        it 'updates min/max value in redis' do
+          Rails.configuration.redis_wrapper.should_receive(:set_min_value).with(app.id, event, '2')
+          Rails.configuration.redis_wrapper.should_receive(:set_max_value).with(app.id, event, '2')
           subject.save
         end
       end

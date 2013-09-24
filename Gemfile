@@ -49,7 +49,7 @@ group :development, :test do
 end
 
 group :test do
-  gem 'fuubar'
+  gem 'fuubar_velocity'
   gem 'guard-rspec'
   gem 'mongoid-rspec'
 end
