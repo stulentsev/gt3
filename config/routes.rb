@@ -10,6 +10,11 @@ Gt2::Application.routes.draw do
   get   'heartbeat' => 'heartbeat#index'
 
 
+  get 'cronworker/schedule_dau'
+  get 'cronworker/schedule_mau'
+  get 'cronworker/schedule_event_uniques'
+  get 'cronworker/schedule_min_max'
+
   namespace :api do
     resources :events, only: [:create]
   end
