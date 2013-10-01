@@ -19,7 +19,9 @@ RSpec.configure do |config|
   # config.mock_with :mocha
   # config.mock_with :flexmock
   # config.mock_with :rr
-  config.mock_with :rspec
+  config.mock_with :rspec do |configuration|
+    configuration.syntax = [:expect, :should]
+  end
 
   # Clean/Reset Mongoid DB prior to running each test.
   config.before(:each) do

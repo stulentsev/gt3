@@ -18,7 +18,7 @@ describe RedisWrapper do
 
   describe '#add_dau/#get_dau' do
     it 'saves separate daus for different apps' do
-      app2_id = app_id + rand(10)
+      app2_id = app_id + 1
       2.times { subject.add_dau app_id, rand(10_000) }
       4.times { subject.add_dau app2_id, rand(10_000) }
 
@@ -29,7 +29,7 @@ describe RedisWrapper do
 
   describe '#add_mau/#get_mau' do
     it 'saves separate maus for different apps' do
-      app2_id = app_id + rand(10)
+      app2_id = app_id + 1
       2.times { subject.add_mau app_id, rand(10_000) }
       4.times { subject.add_mau app2_id, rand(10_000) }
 
