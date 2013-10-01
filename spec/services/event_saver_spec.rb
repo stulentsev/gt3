@@ -56,6 +56,18 @@ describe EventSaver do
       }.to change{RawEntry.count}.by(1)
     end
 
+    it 'creates a new app event with proper fields' do
+      expect {
+        subject.save
+      }.to change{AppEvent.count}.from(0).to(1)
+
+      ae = AppEvent.first
+      ae.name.should == 'loadApp'
+      ae.app_id.should == app.id
+    end
+
+
+
     describe 'forming update params' do
       let(:doc_id) { "#{app.id}_#{Time.now.compact}" }
 

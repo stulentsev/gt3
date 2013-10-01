@@ -19,5 +19,4 @@ describe DauWorker do
 
     subject.perform(params)
   end
-
 end

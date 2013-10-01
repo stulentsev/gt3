@@ -6,7 +6,7 @@ class EventUniquesWorker
     time = args.fetch(:time)
 
     updates = {}
-    app_events.each do |event|
+    app_events(app_id).each do |event|
       val = Rails.configuration.redis_wrapper.get_event_uniques(app_id, event, time)
       updates.deep_merge!(prepare_update_opts(event, val))
     end
@@ -20,5 +20,9 @@ class EventUniquesWorker
   private
   def prepare_update_opts(event, val)
     {:$set => {"stats.#{event}.unique" => val}}
+  end
+
+  def app_events(app_id)
+    AppEvent.where(app_id: app_id)
   end
 end

@@ -26,6 +26,8 @@ class EventSaver
       update_dau
       update_mau
 
+      create_app_event
+
       'ok'
     else
       'error'
@@ -103,5 +105,10 @@ class EventSaver
 
   def update_mau
     Rails.configuration.redis_wrapper.add_mau(app_id, user_id)
+  end
+
+  def create_app_event
+    ae_id = "#{app_id}:#{event}"
+    AppEvent.where(_id: ae_id, app_id: app_id, event: event).first_or_create!
   end
 end

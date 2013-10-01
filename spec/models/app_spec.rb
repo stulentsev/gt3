@@ -9,6 +9,7 @@ describe App do
   it { should validate_presence_of :name }
 
   it { should belong_to :user }
+  it { should have_many :app_events }
 
 
   describe '#app_key' do

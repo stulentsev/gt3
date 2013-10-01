@@ -33,4 +33,7 @@ Gt2::Application.configure do
 
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
+
+  I18n.exception_handler = I18n::JustRaiseExceptionHandler.new
+  config.i18n.default_locale = :en
 end

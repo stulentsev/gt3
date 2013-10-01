@@ -20,5 +20,4 @@ describe EventUniquesWorker do
 
     subject.perform(params)
   end
-
 end
