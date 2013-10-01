@@ -27,6 +27,7 @@ class EventSaver
       update_mau
 
       create_app_event
+      create_app_subevent if subvalue?
 
       'ok'
     else
@@ -109,6 +110,20 @@ class EventSaver
 
   def create_app_event
     ae_id = "#{app_id}:#{event}"
-    AppEvent.where(_id: ae_id, app_id: app_id, name: event).first_or_create!
+
+    AppEvent.where(_id:    ae_id,
+                   app_id: app_id,
+                   name:   event).first_or_create!
+  end
+
+  def create_app_subevent
+    if AppEvent.where(app_id: app_id, name: event, top_level: false).count < 100
+      ae_id = "#{app_id}:#{event}:#{value}"
+      AppEvent.where(_id:       ae_id,
+                     app_id:    app_id,
+                     name:      event,
+                     value:     value,
+                     top_level: false).first_or_create!
+    end
   end
 end

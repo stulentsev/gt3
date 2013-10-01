@@ -23,6 +23,6 @@ class EventUniquesWorker
   end
 
   def app_events(app_id)
-    AppEvent.where(app_id: app_id)
+    AppEvent.where(app_id: app_id, top_level: true)
   end
 end

@@ -64,9 +64,15 @@ describe EventSaver do
       ae = AppEvent.first
       ae.name.should == 'loadApp'
       ae.app_id.should == app.id
+      ae.top_level.should be_true
     end
 
-
+    it 'does not create duplicate events' do
+      expect {
+        subject.save
+        subject.save
+      }.to change{AppEvent.count}.from(0).to(1)
+    end
 
     describe 'forming update params' do
       let(:doc_id) { "#{app.id}_#{Time.now.compact}" }
@@ -107,6 +113,44 @@ describe EventSaver do
         it 'updates counts for every subtype' do
           DailyStat.should_receive(:update_stats).with(doc_id, hash_including(:$inc => hash_including({"counts.#{event}.total" => 1})))
           subject.save
+        end
+
+        it 'creates subevent' do
+          expect {
+            subject.save
+          }.to change{AppEvent.count}.from(0).to(2)
+
+          ae = AppEvent.last
+          ae.id.should == "#{app.id}:loadApp:some subvalue"
+          ae.name.should == 'loadApp'
+          ae.value.should == 'some subvalue'
+          ae.app_id.should == app.id
+          ae.top_level.should be_false
+        end
+
+        context 'when too many subevents' do
+          before do
+            create :app_event,
+                   id: "#{app.id}:#{event}",
+                   app_id:    app.id,
+                   name:      event
+
+            100.times do |x|
+              value = "subvalue #{x}"
+              create :app_event,
+                     id:        "#{app.id}:#{event}:#{value}",
+                     app_id:    app.id,
+                     name:      event,
+                     value:     value,
+                     top_level: false
+            end
+          end
+
+          it 'does not create subevent' do
+            expect {
+              subject.save
+            }.to_not change{AppEvent.count}
+          end
         end
       end
 
