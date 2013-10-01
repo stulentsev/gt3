@@ -11,7 +11,7 @@ class App
 
   belongs_to :user
   has_many :charts
-
+  has_many :app_events
 
   private
   def generate_app_key

@@ -109,6 +109,6 @@ class EventSaver
 
   def create_app_event
     ae_id = "#{app_id}:#{event}"
-    AppEvent.where(_id: ae_id, app_id: app_id, event: event).first_or_create!
+    AppEvent.where(_id: ae_id, app_id: app_id, name: event).first_or_create!
   end
 end
