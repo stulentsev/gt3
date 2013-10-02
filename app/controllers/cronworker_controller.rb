@@ -4,13 +4,13 @@ class CronworkerController < ApplicationController
   before_action :authenticate_user
 
   def schedule_dau
-    schedule_for_each_app DauWorker
+    schedule_for_each_app AuWorker::Daily
 
     render_ok
   end
 
   def schedule_mau
-    schedule_for_each_app MauWorker
+    schedule_for_each_app AuWorker::Monthly
 
     render_ok
   end

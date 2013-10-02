@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe DauWorker do
+describe AuWorker::Daily do
   let(:app) { mock_model(App) }
   let(:time) { Time.now }
   let(:params) { {app_id: app.id, time: time} }
