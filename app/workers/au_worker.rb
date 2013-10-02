@@ -1,14 +1,11 @@
 class AuWorker
   include Sidekiq::Worker
-  include Sidetiq::Schedulable
-
-  recurrence { hourly.minute_of_hour(0, 15, 30, 45) }
 
   def perform(args)
-    app_id = args.fetch(:app_id)
-    time = args.fetch(:time)
+    app_id = args.fetch('app_id')
+    time = Time.parse(args.fetch('time'))
 
-                                         # self.type is a method to be redefined in descendants. For now it can return :dau or :mau
+    # self.type is a method to be redefined in descendants. For now it can return :dau or :mau
     get_method = "get_#{type}" # get_dau or get_mau
     expire_method = "expire_#{type}_key" # expire_dau_key, ...
 

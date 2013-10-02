@@ -2,8 +2,8 @@ class EventUniquesWorker
   include Sidekiq::Worker
 
   def perform(args)
-    app_id = args.fetch(:app_id)
-    time = args.fetch(:time)
+    app_id = args.fetch('app_id')
+    time = Time.parse(args.fetch('time'))
 
     updates = {}
     app_events(app_id).each do |event|

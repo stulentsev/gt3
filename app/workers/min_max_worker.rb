@@ -2,11 +2,11 @@ class MinMaxWorker
   include Sidekiq::Worker
 
   def perform(args)
-    app_id = args.fetch(:app_id)
-    time = args.fetch(:time)
+    app_id = args.fetch('app_id')
+    time = Time.parse(args.fetch('time'))
 
     updates = {}
-    app_events.each do |event|
+    app_events(app_id).each do |event|
       val = Rails.configuration.redis_wrapper.get_min_value(app_id, event, time)
       updates.deep_merge!(prepare_update_opts(:min, event, val))
 
@@ -23,5 +23,9 @@ class MinMaxWorker
   private
   def prepare_update_opts(type, event, val)
     {:$set => {"aggs.#{event}.#{type}" => val}}
+  end
+
+  def app_events(app_id)
+    AppEvent.where(app_id: app_id, top_level: true)
   end
 end

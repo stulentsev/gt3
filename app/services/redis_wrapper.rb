@@ -35,9 +35,14 @@ class RedisWrapper
     redis.sadd(k, user_id)
   end
 
-  def get_mau(app_id)
+  def get_mau(app_id, time = self.time)
     k = keyname_for_mau(app_id, time)
     redis.scard(k)
+  end
+
+  def expire_mau_key(app_id, time = self.time)
+    k = keyname_for_mau(app_id, time)
+    redis.expire(k, 30.days)
   end
 
   def get_min_value(app_id, event, time = self.time)
