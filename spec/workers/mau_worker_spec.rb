@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe AuWorker::Monthly do
   let(:app) { mock_model(App) }
-  let(:time) { Time.now }
-  let(:params) { {app_id: app.id, time: time} }
+  let(:time) { Date.today }
+  let(:params) { {app_id: app.id, time: time.to_s} }
   let(:wrapper) { double() }
 
   before do

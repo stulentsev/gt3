@@ -1,5 +1,5 @@
 class UniqueFlushScheduler
-  include Sidekiq::Worker
+  include Gt2::Worker
   include Sidetiq::Schedulable
 
   #recurrence { hourly.minute_of_hour(0, 15, 30, 45) }

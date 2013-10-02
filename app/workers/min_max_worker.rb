@@ -1,9 +1,7 @@
 class MinMaxWorker
-  include Sidekiq::Worker
-
   def perform(args)
-    app_id = args.fetch('app_id')
-    time = Time.parse(args.fetch('time'))
+    app_id = args.fetch(:app_id)
+    time = args.fetch(:time)
 
     updates = {}
     app_events(app_id).each do |event|
@@ -25,7 +23,5 @@ class MinMaxWorker
     {:$set => {"aggs.#{event}.#{type}" => val}}
   end
 
-  def app_events(app_id)
-    AppEvent.where(app_id: app_id, top_level: true)
-  end
+  include Gt2::Worker
 end
