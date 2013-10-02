@@ -130,25 +130,14 @@ describe EventSaver do
 
         context 'when too many subevents' do
           before do
-            create :app_event,
-                   id: "#{app.id}:#{event}",
-                   app_id:    app.id,
-                   name:      event
-
-            100.times do |x|
-              value = "subvalue #{x}"
-              create :app_event,
-                     id:        "#{app.id}:#{event}:#{value}",
-                     app_id:    app.id,
-                     name:      event,
-                     value:     value,
-                     top_level: false
-            end
+            # for create_app_subevent
+            result = double(count: 100)
+            allow(AppEvent).to receive(:where).with(app_id: app.id, name: event, top_level: false).and_return(result)
           end
 
           it 'does not create subevent' do
             expect {
-              subject.save
+              subject.send(:create_app_subevent)
             }.to_not change{AppEvent.count}
           end
         end
