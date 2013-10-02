@@ -12,6 +12,10 @@ class ApplicationController < ActionController::Base
     render json: json, content_type: 'application/json', status: http_status
   end
 
+  def render_error(message, http_status)
+    render_json({status: 'error', message: message}, http_status)
+  end
+
   def current_user
     @current_user ||= User.find(session[:user_id]) if session[:user_id]
   end

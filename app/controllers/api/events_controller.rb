@@ -1,6 +1,4 @@
-class Api::EventsController < ApplicationController
-  skip_before_filter :verify_authenticity_token
-
+class Api::EventsController < Api::ApplicationController
   def create
     saver = EventSaver.new(params)
     status = saver.save
