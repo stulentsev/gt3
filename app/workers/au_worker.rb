@@ -1,5 +1,11 @@
 class AuWorker
+  include Sidekiq::Worker
+  include Gt2::Worker
+
   def perform(args)
+    args = args.with_indifferent_access
+    args[:time] = Date.parse(args[:time]) if args[:time]
+
     app_id        = args.fetch(:app_id)
     time          = args.fetch(:time)
 
@@ -16,16 +22,12 @@ class AuWorker
   end
 
   class Daily < self
-    include Gt2::Worker
-
     def type
       :dau
     end
   end
 
   class Monthly < self
-    include Gt2::Worker
-
     def type
       :mau
     end

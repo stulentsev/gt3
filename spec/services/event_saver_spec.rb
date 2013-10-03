@@ -8,7 +8,6 @@ describe EventSaver do
   let(:default_params) {
     {
       app_id: app.id,
-      method: 'track_event',
       event: event,
       user_id: user_id
     }
@@ -18,19 +17,8 @@ describe EventSaver do
     let(:event_params) { default_params }
     let(:result) { EventSaver.new(event_params).valid? }
 
-    it_should_behave_like :requires_parameter, :method
     it_should_behave_like :requires_parameter, :app_id
     it_should_behave_like :requires_parameter, :event
-
-    context 'event with subtype' do
-      let(:event_params) { default_params.merge(method: 'track_value', value: 'subvalue') }
-      it_should_behave_like :requires_parameter, :value
-    end
-
-    context 'numerical event' do
-      let(:event_params) { default_params.merge(method: 'track_number', value: '1') }
-      it_should_behave_like :requires_parameter, :value
-    end
   end
 
   describe '#save' do
@@ -107,11 +95,11 @@ describe EventSaver do
 
       describe 'event with subtype' do
         let(:event_params) {
-          default_params.merge(method: 'track_value', value: 'some subvalue')
+          default_params.merge(value: 'some subvalue')
         }
 
         it 'updates counts for every subtype' do
-          DailyStat.should_receive(:update_stats).with(doc_id, hash_including(:$inc => hash_including({"counts.#{event}.total" => 1})))
+          DailyStat.should_receive(:update_stats).with(doc_id, hash_including(:$inc => hash_including({"counts.#{event}.some subvalue.total" => 1})))
           subject.save
         end
 
@@ -145,7 +133,7 @@ describe EventSaver do
 
       describe 'numerical event' do
         let(:event_params) {
-          default_params.merge(method: 'track_number', value: '2')
+          default_params.merge(value: '2')
         }
 
         it 'calculates aggregate values: min/max/avg/sum' do

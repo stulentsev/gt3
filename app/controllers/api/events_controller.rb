@@ -1,8 +1,7 @@
 class Api::EventsController < Api::ApplicationController
   def create
-    saver = EventSaver.new(params)
-    status = saver.save
+    SaverWorker.perform_async(params)
 
-    render json: {status: status}
+    render json: {status: 'ok'}
   end
 end

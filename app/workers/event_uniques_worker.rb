@@ -1,5 +1,11 @@
 class EventUniquesWorker
+  include Sidekiq::Worker
+  include Gt2::Worker
+
   def perform(args)
+    args = args.with_indifferent_access
+    args[:time] = Date.parse(args[:time]) if args[:time]
+
     app_id = args.fetch(:app_id)
     time = args.fetch(:time)
 
@@ -19,6 +25,4 @@ class EventUniquesWorker
   def prepare_update_opts(event, val)
     {:$set => {"stats.#{event}.unique" => val}}
   end
-
-  include Gt2::Worker
 end

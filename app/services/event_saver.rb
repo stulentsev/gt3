@@ -36,11 +36,13 @@ class EventSaver
   end
 
   def numeric?
-    @event_params[:method] == 'track_number'
+    value && Float(value)
+  rescue ArgumentError, TypeError
+    false
   end
 
   def subvalue?
-    @event_params[:method] == 'track_value'
+    !numeric? && value
   end
 
   private
@@ -57,7 +59,7 @@ class EventSaver
   end
 
   def value
-    @event_params.fetch(:value)
+    @event_params[:value]
   end
 
   def user_id
@@ -65,7 +67,7 @@ class EventSaver
   end
 
   def common_params_present?
-    [:method, :app_id, :event].all?{|prm| @event_params.has_key?(prm)}
+    [:app_id, :event].all?{|prm| @event_params.has_key?(prm)}
   end
 
   def contextual_params_present?
@@ -86,7 +88,7 @@ class EventSaver
   end
 
   def update_subvalue
-    {:$inc => {"counts.#{event}.total" => 1}}
+    {:$inc => {"counts.#{event}.#{value}.total" => 1}}
   end
 
   def update_numeric

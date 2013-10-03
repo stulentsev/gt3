@@ -2,6 +2,8 @@ class App
   include Mongoid::Document
   include Mongoid::Timestamps
 
+  field :_id, type: String, default: -> { Moped::BSON::ObjectId.new.to_s }
+
   field :name
   field :app_key
 

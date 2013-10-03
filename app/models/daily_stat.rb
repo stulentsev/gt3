@@ -37,6 +37,25 @@ class DailyStat
     counts.fetch_path(event, subvalue, :total)
   end
 
+  def sum_for(event)
+    aggs.fetch_path(event, :sum)
+  end
+
+  def avg_for(event)
+    cnt = aggs.fetch_path(event, :count)
+    sum = sum_for(event)
+
+    sum / cnt
+  end
+
+  def min_for(event)
+    aggs.fetch_path(event, :min)
+  end
+
+  def max_for(event)
+    aggs.fetch_path(event, :max)
+  end
+
   private
   def today_record?
     _id =~ /.*_#{Time.now.compact}/
