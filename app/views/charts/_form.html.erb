@@ -10,7 +10,8 @@
   <div class="control-group">
     <%= f.label :config, :class => 'control-label' %>
     <div class="controls">
-      <%= f.text_field :config, :class => 'text_field' %>
+      <%= f.text_area :config, :class => 'text_area', :size => '20x10' %>
+      <%= link_to t('labels.docs'), '#' %>
     </div>
   </div>
 
