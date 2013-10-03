@@ -18,6 +18,10 @@ gem 'inherited_resources'
 gem 'jquery-rails'
 gem 'haml'
 
+gem 'sidekiq', '~> 2.14'
+gem 'sidetiq' # recurring jobs
+gem 'sinatra'
+
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false
@@ -33,6 +37,7 @@ gem 'bcrypt-ruby', '~> 3.0.0'
 
 group :development do
   gem 'pry'
+  gem 'pry-debugger'
   gem 'capistrano'
   gem 'capistrano-ext'
   gem 'quiet_assets'
@@ -41,11 +46,11 @@ end
 group :development, :test do
   gem 'factory_girl_rails'
   gem 'zeus'
+  gem 'rspec-rails'
 end
 
 group :test do
-  gem 'fuubar'
+  gem 'fuubar_velocity'
   gem 'guard-rspec'
   gem 'mongoid-rspec'
-  gem 'rspec-rails'
 end

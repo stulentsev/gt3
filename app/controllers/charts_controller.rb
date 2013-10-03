@@ -1,15 +1,15 @@
 class ChartsController < InheritedResources::Base
 
   def create
-    create! { app_path(@chart.app) }
+    create! { edit_app_path(@chart.app) }
   end
 
   def update
-    update! { app_path(@chart.app) }
+    update! { edit_app_path(@chart.app) }
   end
 
   def destroy
-    destroy! { app_path(@chart.app) }
+    destroy! { edit_app_path(@chart.app) }
   end
 
   private

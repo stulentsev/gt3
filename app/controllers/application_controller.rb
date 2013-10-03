@@ -2,10 +2,18 @@ class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
-
+  include Gt2::Utilities
 
   def authenticate_user
     redirect_to login_path unless current_user
+  end
+
+  def render_json(json, http_status = :ok)
+    render json: json, content_type: 'application/json', status: http_status
+  end
+
+  def render_error(message, http_status)
+    render_json({status: 'error', message: message}, http_status)
   end
 
   def current_user

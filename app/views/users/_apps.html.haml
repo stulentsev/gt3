@@ -15,6 +15,6 @@
         %td= link_to t('helpers.label.app.link'), app_stat_path(app)
         %td
           = link_to t('labels.edit'), edit_app_path(app)
-          = link_to t('labels.delete'), app_path(app), method: :delete, :confirm => 'Are you sure?'
+          = link_to t('labels.delete'), app_path(app), method: :delete, data: {confirm: 'Are you sure?'}
 - else
   = t('labels.no_apps')

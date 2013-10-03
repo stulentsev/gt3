@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe Chart do
+  it { should be_timestamped_document }
+
   it { should have_field :name }
   it { should have_field :config }
 

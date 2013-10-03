@@ -1,0 +1,3 @@
+- add scheduler (built in sidekiq?) to launch jobs for saving in-memory data (dau/mau, min/max caches)
+- implement jobs for saving in-memory data
+- implement API

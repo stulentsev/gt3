@@ -9,5 +9,3 @@ module I18n
     end
   end
 end
-
-I18n.exception_handler = I18n::JustRaiseExceptionHandler.new
