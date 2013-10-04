@@ -47,7 +47,8 @@ class RedisWrapper
 
   def get_min_value(app_id, event, time = self.time)
     k = keyname_for_min_value(app_id, event, time)
-    redis.get(k).to_f
+    res = redis.get(k)
+    res ? res.to_f : nil
   end
 
   def set_min_value(app_id, event, value)
@@ -57,7 +58,8 @@ class RedisWrapper
 
   def get_max_value(app_id, event, time = self.time)
     k = keyname_for_max_value(app_id, event, time)
-    redis.get(k).to_f
+    res = redis.get(k)
+    res ? res.to_f : nil
   end
 
   def set_max_value(app_id, event, value)
