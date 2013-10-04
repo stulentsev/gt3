@@ -5,13 +5,11 @@
   %table
     %tr
       %th= t('helpers.label.app.name')
-      %th= t('helpers.label.app.status')
       %th= t('helpers.label.app.link')
       %th= t('helpers.actions')
     - current_user.apps.each do |app|
       %tr
         %td= app.name
-        %td 'N/A'
         %td= link_to t('helpers.label.app.link'), app_stat_path(app)
         %td
           = link_to t('labels.edit'), edit_app_path(app)

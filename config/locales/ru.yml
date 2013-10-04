@@ -27,7 +27,7 @@ ru:
   helpers:
     actions: "Действия"
     links:
-      cancel: "Отменить"
+      cancel: "Назад"
       login: "Залогиниться"
       logout: "Разлогиниться"
       edit: "Редактировать"

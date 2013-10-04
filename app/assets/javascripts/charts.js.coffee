@@ -3,8 +3,9 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 $ () ->
-  CodeMirror.fromTextArea($('#chart_config')[0], {
-    mode: "text/x-yaml"
-    tabSize: 2
-    lineNumbers: true
-    })
+  $('#chart_config').each () ->
+    CodeMirror.fromTextArea(this, {
+      mode: "text/x-yaml"
+      tabSize: 2
+#      lineNumbers: true
+      })
