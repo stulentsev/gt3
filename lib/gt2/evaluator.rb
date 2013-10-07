@@ -16,17 +16,13 @@ class Gt2::Evaluator
   def valid_formula?
     # scan for valid suffixes
     formula.scan(@name_regex).map(&:compact).map(&:first).map do |full_name|
-      parts = full_name.split('.')
-      if parts.second && !(%w{unique total sum average}.include?(parts.second))
-        return false
-      end
+      _, prefix = full_name.split('.')
+      return false if prefix && !valid_prefix?(prefix)
     end
 
     # scan for names that don't conform to regex
     f = formula.gsub(@name_regex, '').gsub(/[\+\*\-\/]/, '')
-    unless f.strip.empty?
-      return false
-    end
+    return false unless f.strip.empty?
 
     true
   end
@@ -60,4 +56,8 @@ class Gt2::Evaluator
     false
   end
 
+  private
+  def valid_prefix?(word)
+    (%w{unique total sum average}.include?(word))
+  end
 end

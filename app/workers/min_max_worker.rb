@@ -12,10 +12,10 @@ class MinMaxWorker
     updates = {}
     app_events(app_id).each do |event|
       val = Rails.configuration.redis_wrapper.get_min_value(app_id, event, time)
-      updates.deep_merge!(prepare_update_opts(:min, event, val))
+      updates.deep_merge!(prepare_update_opts(:min, event, val)) if val
 
       val = Rails.configuration.redis_wrapper.get_max_value(app_id, event, time)
-      updates.deep_merge!(prepare_update_opts(:max, event, val))
+      updates.deep_merge!(prepare_update_opts(:max, event, val)) if val
     end
 
     doc_id = "#{app_id}_#{time.compact}"
