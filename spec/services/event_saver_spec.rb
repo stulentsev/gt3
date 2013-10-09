@@ -76,19 +76,19 @@ describe EventSaver do
       end
 
       it 'updates unique count' do
-        Rails.configuration.redis_wrapper.should_receive(:add_event_unique).with(app.id, event, user_id)
+        Rails.configuration.redis_wrapper.should_receive(:add_event_unique).with(app.id, event, user_id, anything)
 
         subject.save
       end
 
       it 'updates dau' do
-        Rails.configuration.redis_wrapper.should_receive(:add_dau).with(app.id, user_id)
+        Rails.configuration.redis_wrapper.should_receive(:add_dau).with(app.id, user_id, anything)
 
         subject.save
       end
 
       it 'updates mau' do
-        Rails.configuration.redis_wrapper.should_receive(:add_mau).with(app.id, user_id)
+        Rails.configuration.redis_wrapper.should_receive(:add_mau).with(app.id, user_id, anything)
 
         subject.save
       end
@@ -144,8 +144,8 @@ describe EventSaver do
         end
 
         it 'updates min/max value in redis' do
-          Rails.configuration.redis_wrapper.should_receive(:set_min_value).with(app.id, event, '2')
-          Rails.configuration.redis_wrapper.should_receive(:set_max_value).with(app.id, event, '2')
+          Rails.configuration.redis_wrapper.should_receive(:set_min_value).with(app.id, event, '2', anything)
+          Rails.configuration.redis_wrapper.should_receive(:set_max_value).with(app.id, event, '2', anything)
           subject.save
         end
       end

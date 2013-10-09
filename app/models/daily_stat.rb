@@ -9,8 +9,15 @@ class DailyStat
   field :aggs, type: Hash, default: {}
 
   scope :today_stat, ->(app_id) { where(_id: "#{app_id}_#{Time.now.compact}") }
+  scope :last_30, ->(app_id) {
+    first_id = "#{app_id}_#{30.days.ago.compact}"
+    today_id = "#{app_id}_#{Time.now.compact}"
+    where(:_id.gte => first_id, :_id.lte => today_id)
+  }
 
   def self.update_stats(id, updates)
+    return if updates.empty?
+
     # Use moped session directly to update multiple field atomically
 
     # session[:artists].find(name: "Syd Vicious").update(:$push => { instruments: { name: "Bass" }})

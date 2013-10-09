@@ -3,14 +3,21 @@ ru:
   stat_placeholder: "А тут будут графики-шмафики"
   labels:
     apps: "Приложения"
+    app: "Приложение"
     charts: "Графики"
     no_apps: "У вас нет подключенных приложений"
     no_charts: "Здесь пока нет графиков."
+    docs: 'Документация'
+    sidebar: "Сайдбар"
+    links: "Полезные ссылки"
 
     edit: "Редактировать"
     delete: "Удалить"
     profile_title: "Это твой профиль, %{username}"
     home: "Главная страница"
+  messages:
+    charts:
+      not_found: "Нет графиков (пока)"
 
   apps:
     new:
@@ -26,7 +33,7 @@ ru:
   helpers:
     actions: "Действия"
     links:
-      cancel: "Отменить"
+      cancel: "Назад"
       login: "Залогиниться"
       logout: "Разлогиниться"
       edit: "Редактировать"

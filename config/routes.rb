@@ -1,5 +1,4 @@
 Gt2::Application.routes.draw do
-  get "stats/show"
   get   'login' => 'sessions#new'
   post  'logout' => 'sessions#destroy'
   post  "sessions/create"

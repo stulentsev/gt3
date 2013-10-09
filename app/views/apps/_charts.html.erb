@@ -3,18 +3,14 @@
     <table class="table table-striped">
       <thead>
       <tr>
-        <th><%= model_class.human_attribute_name(:id) %></th>
         <th><%= model_class.human_attribute_name(:name) %></th>
-        <th><%= model_class.human_attribute_name(:config) %></th>
         <th><%=t '.actions', :default => t("helpers.actions") %></th>
       </tr>
       </thead>
       <tbody>
       <% charts.each do |chart| %>
           <tr>
-            <td><%= link_to chart.id, chart_path(chart) %></td>
-            <td><%= chart.name %></td>
-            <td><%= chart.config %></td>
+            <td><%= link_to chart.name, chart_path(chart) %></td>
             <td>
               <%= link_to t('.edit', :default => t("helpers.links.edit")),
                           edit_chart_path(chart), :class => 'btn btn-mini' %>

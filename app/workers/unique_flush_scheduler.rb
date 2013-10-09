@@ -1,4 +1,5 @@
 class UniqueFlushScheduler
+  include Sidekiq::Worker
   include Gt2::Worker
   include Sidetiq::Schedulable
 

@@ -1,5 +1,6 @@
 class EventSaver
   def initialize(event_params)
+    @time = event_params.delete(:time)
     @event_params = event_params.symbolize_keys
   end
 
@@ -79,7 +80,7 @@ class EventSaver
   end
 
   def update_common_parameters
-    Rails.configuration.redis_wrapper.add_event_unique(app_id, event, user_id)
+    Rails.configuration.redis_wrapper.add_event_unique(app_id, event, user_id, time)
 
     {
       :$inc => { "stats.#{event}.total" => 1 },
@@ -98,16 +99,16 @@ class EventSaver
   end
 
   def update_minmax_caches
-    Rails.configuration.redis_wrapper.set_min_value(app_id, event, value)
-    Rails.configuration.redis_wrapper.set_max_value(app_id, event, value)
+    Rails.configuration.redis_wrapper.set_min_value(app_id, event, value, time)
+    Rails.configuration.redis_wrapper.set_max_value(app_id, event, value, time)
   end
 
   def update_dau
-    Rails.configuration.redis_wrapper.add_dau(app_id, user_id)
+    Rails.configuration.redis_wrapper.add_dau(app_id, user_id, time)
   end
 
   def update_mau
-    Rails.configuration.redis_wrapper.add_mau(app_id, user_id)
+    Rails.configuration.redis_wrapper.add_mau(app_id, user_id, time)
   end
 
   def create_app_event

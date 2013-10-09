@@ -20,4 +20,42 @@ module ApplicationHelper
     end
     flash_messages.join("\n").html_safe
   end
+
+  def display_sidebar(link_groups)
+    return '' if link_groups.empty?
+
+    content_tag(:div, class: 'span3') do
+      content_tag(:div, class: 'well sidebar-nav') do
+        content = sidebar_title
+
+        content + link_groups.map do |title, rows|
+           sidebar_links(title, rows)
+        end.join.html_safe
+      end
+    end
+  end
+
+  def sidebar_links(title, rows)
+    content_tag(:ul, class: 'nav nav-list') do |c|
+      content = content_tag(:li, class: 'nav-header') { title }
+
+      content + rows.map do |row|
+        content_tag(:li, link_to(row[:name], row[:href]))
+      end.join.html_safe
+    end
+  end
+
+  def sidebar_title
+    content_tag(:h3, I18n.t('labels.sidebar'))
+  end
+
+  def format_dates(arr)
+    arr.map do |elem|
+      d = Date.parse(elem)
+      d.strftime('%b %d')
+    end
+  end
+
+  private
+
 end
