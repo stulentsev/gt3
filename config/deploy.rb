@@ -1,16 +1,17 @@
 
 require 'sidekiq/capistrano'
 
-set :application, "set your application name here"
-set :repository,  "set your repository location here"
 
 # set :scm, :git # You can set :scm explicitly or Capistrano will make an intelligent guess based on known version control directory names
 # Or: `accurev`, `bzr`, `cvs`, `darcs`, `git`, `mercurial`, `perforce`, `subversion` or `none`
 
-role :web, "your web-server here"                          # Your HTTP server, Apache/etc
-role :app, "your app-server here"                          # This may be the same as your `Web` server
-role :db,  "your primary db-server here", :primary => true # This is where Rails migrations will run
-role :db,  "your slave db-server here"
+set :host, 'gt2'
+role :web, host                          # Your HTTP server, Apache/etc
+role :app, host                          # This may be the same as your `Web` server
+role :db,  host # This is where Rails migrations will run
+
+set :ssh_options, {:forward_agent => true}
+set :use_sudo, false
 
 # if you want to clean up old releases on each deploy uncomment this:
 # after "deploy:restart", "deploy:cleanup"
@@ -27,16 +28,17 @@ role :db,  "your slave db-server here"
 #   end
 # end
 
-set :stages, %w(production staging)
-set :default_stage, "staging"
-require 'capistrano/ext/multistage'
+namespace :deploy do
+  task :migrate do; end
+end
 
 set :application, "gt2"
-set :user, "www-data"
+set :user, "sergio"
 set :group, "www-data"
 
 set :scm, :git
-set :repository, "https://stulentsev@bitbucket.org/stulentsev/gt2.git"
+set :repository, "git@bitbucket.org:stulentsev/gt2.git"
+set :branch, 'develop'
 set :deploy_to, "/var/www/#{application}"
 set :deploy_via, :remote_cache
 set :rails_env, 'production'
