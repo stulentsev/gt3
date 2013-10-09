@@ -13,6 +13,7 @@ gem 'font-awesome-rails'
 
 gem 'inherited_resources'
 
+gem 'puma'
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 
