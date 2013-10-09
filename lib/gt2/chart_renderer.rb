@@ -32,12 +32,27 @@ class Gt2::ChartRenderer
     # for each line
     #   for each daily stat
     #     evaluate line
-    []
+    chart.lines.map do |line|
+      {
+        name: line['name'],
+        data: @data.map{|ds| evaluate_formula(line['formula'], ds)},
+      }
+    end
   end
 
   private
   # returns data sorted chronologically
   def fetch_data
     DailyStat.last_30(chart.app.id).asc(:_id).to_a
+  end
+
+  def evaluate_formula(formula, daily_stat)
+    vars = {}
+    daily_stat.stats.each do |k, v|
+      vars["#{k}.total"] = v['total']
+      vars["#{k}.unique"] = v['unique']
+    end
+    ev = Gt2::Evaluator.new(formula)
+    ev.evaluate_with(vars)
   end
 end

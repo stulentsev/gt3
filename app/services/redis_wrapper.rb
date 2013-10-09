@@ -5,7 +5,7 @@ class RedisWrapper
 
   attr_reader :redis
 
-  def add_event_unique(app_id, event, user_id)
+  def add_event_unique(app_id, event, user_id, time = self.time)
     k = keyname_for_event_uniques(app_id, event, time)
     redis.sadd(k, user_id)
   end
@@ -15,7 +15,7 @@ class RedisWrapper
     redis.scard(k)
   end
 
-  def add_dau(app_id, user_id)
+  def add_dau(app_id, user_id, time = self.time)
     k = keyname_for_dau(app_id, time)
     redis.sadd(k, user_id)
   end
@@ -51,7 +51,7 @@ class RedisWrapper
     res ? res.to_f : nil
   end
 
-  def set_min_value(app_id, event, value)
+  def set_min_value(app_id, event, value, time = self.time)
     k = keyname_for_min_value(app_id, event, time)
     redis.eval min_value_script, [k], [value]
   end
@@ -62,7 +62,7 @@ class RedisWrapper
     res ? res.to_f : nil
   end
 
-  def set_max_value(app_id, event, value)
+  def set_max_value(app_id, event, value, time = self.time)
     k = keyname_for_max_value(app_id, event, time)
     redis.eval max_value_script, [k], [value]
   end
