@@ -1,0 +1,57 @@
+ru:
+  app_name: "Графики Туленцева 2"
+  stat_placeholder: "А тут будут графики-шмафики"
+  labels:
+    apps: "Приложения"
+    app: "Приложение"
+    charts: "Графики"
+    no_apps: "У вас нет подключенных приложений"
+    no_charts: "Здесь пока нет графиков."
+    docs: 'Документация'
+    sidebar: "Сайдбар"
+    links: "Полезные ссылки"
+
+    edit: "Редактировать"
+    delete: "Удалить"
+    profile_title: "Это твой профиль, %{username}"
+    home: "Главная страница"
+  messages:
+    charts:
+      not_found: "Нет графиков (пока)"
+
+  apps:
+    new:
+      title: "Новое приложение"
+    edit:
+      title: "Редактировать приложение"
+  charts:
+    new:
+      title: "Новый график"
+    edit:
+      title: "Редактировать график"
+
+  helpers:
+    actions: "Действия"
+    links:
+      cancel: "Назад"
+      login: "Залогиниться"
+      logout: "Разлогиниться"
+      edit: "Редактировать"
+      destroy: "Удалить"
+    label:
+      app:
+        name: "Название"
+        status: "Статус"
+        app_key: "Ключ приложения"
+        link: "Ссылка на графики"
+      chart:
+        name: "Название"
+        config: "Настройки"
+
+    submit:
+      app:
+        create: "Создать приложение"
+        update: "Редактировать приложение"
+      chart:
+        create: "Создать график"
+        update: "Редактировать график"

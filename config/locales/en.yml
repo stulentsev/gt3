@@ -20,4 +20,5 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  app_name: "Tulentsev Charts 2"
+  stat_placeholder: "Charts-shmarts will be here"

@@ -1,4 +1,35 @@
 Gt2::Application.routes.draw do
+  get   'login' => 'sessions#new'
+  post  'logout' => 'sessions#destroy'
+  post  "sessions/create"
+
+  get   "users/edit"
+  post  "users/update"
+
+  get   'heartbeat' => 'heartbeat#index'
+
+  get 'cronworker/schedule_dau'
+  get 'cronworker/schedule_mau'
+  get 'cronworker/schedule_event_uniques'
+  get 'cronworker/schedule_min_max'
+
+  namespace :api do
+    resources :events, only: [:create]
+  end
+
+  resources :apps do
+    resource :stat, only: [:show]
+  end
+
+  resources :charts
+
+  get 'profile' => 'users#profile'
+
+  root  'users#profile'
+
+  mount Sidekiq::Web => '/sidekiq'
+
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
@@ -39,7 +70,7 @@ Gt2::Application.routes.draw do
   #       get 'recent', on: :collection
   #     end
   #   end
-  
+
   # Example resource route with concerns:
   #   concern :toggleable do
   #     post 'toggle'

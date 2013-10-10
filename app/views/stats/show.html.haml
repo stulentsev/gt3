@@ -1,0 +1,42 @@
+
+- content_for(:sidebar) do
+  = display_sidebar(@link_groups)
+
+
+:javascript
+  $(function () {
+      $('#chart_container').highcharts({
+          plotOptions: {
+            series: {
+              animation: false
+            }
+          },
+          title: {
+              text: #{ @chart.name.to_json },
+              x: -20 //center
+          },
+          xAxis: {
+              categories: #{ format_dates(@categories).to_json },
+              tickInterval: 5
+          },
+          yAxis: {
+              title: {
+                  text: false
+              },
+              plotLines: [{
+                  value: 0,
+                  width: 1,
+                  color: '#808080'
+              }]
+          },
+          legend: {
+              layout: 'vertical',
+              align: 'right',
+              verticalAlign: 'middle',
+              borderWidth: 1
+          },
+          series: #{ @chart_data.to_json }
+      });
+  });
+
+#chart_container

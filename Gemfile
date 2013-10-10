@@ -3,41 +3,58 @@ source 'https://rubygems.org'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.0.0'
 
-
-# Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.0'
-
-# Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
-
-# Use CoffeeScript for .js.coffee assets and views
 gem 'coffee-rails', '~> 4.0.0'
+#gem 'twitter-bootstrap-rails'
+#gem 'bootstrap-sass'
+gem 'flatstrap-sass'
+gem 'font-awesome-rails'
 
+gem 'inherited_resources'
+
+gem 'puma'
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 
-# Use jquery as the JavaScript library
 gem 'jquery-rails'
+gem 'haml'
 
-# Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'turbolinks'
+gem 'simple_form'
 
-# Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 1.2'
+gem 'sidekiq', '~> 2.14'
+gem 'sidetiq' # recurring jobs
+gem 'sinatra'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false
 end
 
+
+# Databases
+gem 'mongoid', github: 'mongoid/mongoid'
+gem 'redis'
+
 # Use ActiveModel has_secure_password
-# gem 'bcrypt-ruby', '~> 3.0.0'
+gem 'bcrypt-ruby', '~> 3.0.0'
 
-# Use unicorn as the app server
-# gem 'unicorn'
+group :development do
+  gem 'pry'
+  gem 'pry-debugger'
+  gem 'capistrano'
+  gem 'capistrano-ext'
+  gem 'quiet_assets'
+end
 
-# Use Capistrano for deployment
-# gem 'capistrano', group: :development
+group :development, :test do
+  gem 'factory_girl_rails'
+  gem 'zeus'
+  gem 'rspec-rails'
+end
 
-# Use debugger
-# gem 'debugger', group: [:development, :test]
+group :test do
+  gem 'fuubar_velocity'
+  gem 'guard-rspec'
+  gem 'mongoid-rspec'
+end

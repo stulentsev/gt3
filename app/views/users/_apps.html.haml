@@ -1,0 +1,19 @@
+%h2= t('labels.apps')
+
+- if current_user.apps.present?
+
+  %table{class: 'table'}
+    %tr
+      %th= t('helpers.label.app.name')
+      %th= t('helpers.label.app.link')
+      %th= t('helpers.actions')
+    - current_user.apps.each do |app|
+      %tr
+        %td= app.name
+        %td= link_to_charts(app)
+        %td
+          = link_to t('labels.edit'), edit_app_path(app), class: 'btn btn-mini'
+          = link_to t('labels.delete'), app_path(app), method: :delete,
+            data: {confirm: 'Are you sure?'}, class: 'btn btn-mini btn-danger'
+- else
+  = t('labels.no_apps')
