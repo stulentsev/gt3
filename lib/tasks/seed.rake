@@ -1,6 +1,6 @@
 namespace :users do
   desc 'Creates initial users'
-  task :create_first_user do
+  task :create_first_user => :environment do
     unless User.where(name: 'admin').first
       User.create(name:                  'admin',
                   email:                 'admin@gt2.ru',
