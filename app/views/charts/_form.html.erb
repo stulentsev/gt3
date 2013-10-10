@@ -4,7 +4,8 @@
   <%= f.hidden_field :app_id, value: @chart.app_id || params[:chart][:app_id] %>
 
   <%= f.input :name %>
-  <%= f.input :config, as: :text, :input_html => { :rows => 10 }, hint: link_to(t('labels.docs'), '#') %>
+  <%= f.input :config, as: :text, :input_html => { :rows => 10 },
+              hint: link_to(t('labels.docs'), '/pdf/chart_settings_documentation.pdf') %>
 
   <div class="form-actions">
     <%= f.submit nil, :class => 'btn btn-primary' %>
