@@ -32,7 +32,7 @@ class Gt2::ChartRenderer
     # for each line
     #   for each daily stat
     #     evaluate line
-    chart.lines.map do |line|
+    expand_lines(chart.lines).map do |line|
       {
         name: line['name'],
         data: @data.map{|ds| evaluate_formula(line['formula'], ds)},
@@ -81,5 +81,11 @@ class Gt2::ChartRenderer
       vars["#{k}.total"]  = v['total']
       vars["#{k}.unique"] = v['unique']
     end
+  end
+
+  def expand_lines(lines_obj)
+    return lines_obj if lines_obj.is_kind_of?(Array)
+
+    # movie
   end
 end
