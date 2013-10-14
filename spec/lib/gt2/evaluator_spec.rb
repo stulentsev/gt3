@@ -81,4 +81,12 @@ describe Gt2::Evaluator do
       ev.evaluate_with(values).should == 5.43
     }.to raise_error(Gt2::Api::Errors::NotFoundError)
   end
+
+  it 'does not raise error if value is missing, but default value block is given' do
+    ev = Gt2::Evaluator.new 'load / load.unique + revenue.sum'
+    values = {'load' => 10, 'revenue.sum' => 2.1}
+
+    res = ev.evaluate_with(values) { 2 }
+    res.should == 7.1
+  end
 end
