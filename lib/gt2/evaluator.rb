@@ -2,7 +2,7 @@ class Gt2::Evaluator
   def initialize(formula = nil)
     self.formula = formula || ''
 
-    @name_regex = /(((\w+)|(\[([^\.\]]+)\]))(\.\w+)?)/
+    @name_regex = /(((\w+)|(\[([^\]]+)\]))(\.\w+)?)/
   end
 
   attr_accessor :formula
@@ -16,8 +16,9 @@ class Gt2::Evaluator
   def valid_formula?
     # scan for valid suffixes
     formula.scan(@name_regex).map(&:compact).map(&:first).map do |full_name|
-      _, prefix = full_name.split('.')
-      return false if prefix && !valid_prefix?(prefix)
+      parts = full_name.split('.')
+      suffix = parts.last
+      return false if parts.length > 1 && suffix && !valid_suffix?(suffix)
     end
 
     # scan for names that don't conform to regex
@@ -63,7 +64,7 @@ class Gt2::Evaluator
   end
 
   private
-  def valid_prefix?(word)
+  def valid_suffix?(word)
     (%w{unique total sum average}.include?(word))
   end
 end

@@ -13,6 +13,7 @@ describe Gt2::Evaluator do
             '[%visit]',
             '[session-count] / load.total', '[my first metric] / load.total',
             '[load app].total',
+            '[referrer.menu].total', '[movie category.science fiction].total',
       ]
 
       ff.each do |f|

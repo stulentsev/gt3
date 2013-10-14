@@ -47,25 +47,39 @@ class Gt2::ChartRenderer
   end
 
   def evaluate_formula(formula, daily_stat)
-    vars = {}
-    daily_stat.stats.each do |k, v|
-      vars["#{k}.total"] = v['total']
-      vars["#{k}.unique"] = v['unique']
-    end
+    v1 = common_values(daily_stat)
+    v2 = agg_values(daily_stat)
+    v3 = counted_values(daily_stat)
 
-    # aggs
-    daily_stat.aggs.each do |k, v|
-      vars["#{k}.min"] = v['min']
-      vars["#{k}.max"] = v['max']
-      vars["#{k}.sum"] = sum =  v['sum']
-
-      cnt = v['count']
-      vars["#{k}.average"] = sum.to_f / cnt
-    end
+    vars = v1.merge(v2).merge(v3)
 
     ev = Gt2::Evaluator.new(formula)
-    ev.evaluate_with(vars) do |name|
-      0
+    ev.evaluate_with(vars) { 0 } # return 0 for missing values
+  end
+
+  def counted_values(daily_stat)
+    daily_stat.counts.each_with_object({}) do |(k, cnts), vars|
+      cnts.each do |subvalue, v|
+        vars["#{k}.#{subvalue}.total"] = v['total']
+      end
+    end
+  end
+
+  def agg_values(daily_stat)
+    daily_stat.aggs.each_with_object({}) do |(k, v), vars|
+      vars["#{k}.min"] = v['min']
+      vars["#{k}.max"] = v['max']
+      vars["#{k}.sum"] = sum = v['sum']
+
+      cnt                  = v['count']
+      vars["#{k}.average"] = sum.to_f / cnt
+    end
+  end
+
+  def common_values(daily_stat)
+    daily_stat.stats.each_with_object({}) do |(k, v), vars|
+      vars["#{k}.total"]  = v['total']
+      vars["#{k}.unique"] = v['unique']
     end
   end
 end

@@ -20,9 +20,9 @@ class Gt2::DummyDataGenerator
       end
 
       rand(30..40).times do
-        options = %w[menu notifications ad_1 catalog recommended]
+        options = ['comedy', 'fantasy', 'action', 'science fiction']
 
-        es = EventSaver.new(time: d, event: 'referrer', user_id: rand(100), app_id: app_id, value: options.sample)
+        es = EventSaver.new(time: d, event: 'movie category', user_id: rand(100), app_id: app_id, value: options.sample)
         es.save
       end
 
