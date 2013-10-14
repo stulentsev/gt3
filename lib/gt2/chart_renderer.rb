@@ -54,6 +54,8 @@ class Gt2::ChartRenderer
       # TODO: add aggs and counts
     end
     ev = Gt2::Evaluator.new(formula)
-    ev.evaluate_with(vars)
+    ev.evaluate_with(vars) do |name|
+      0
+    end
   end
 end

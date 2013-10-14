@@ -34,7 +34,13 @@ class Gt2::Evaluator
         name
       else
         val = values[name]
-        raise Gt2::Api::Errors::NotFoundError.new("Can not find value for variable #{name}") unless val
+
+        val ||= if block_given?
+          yield name
+        else
+          raise Gt2::Api::Errors::NotFoundError.new("Can not find value for variable #{name}") unless val
+        end
+
         val.to_f
       end
     end
