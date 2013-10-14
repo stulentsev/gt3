@@ -51,8 +51,18 @@ class Gt2::ChartRenderer
     daily_stat.stats.each do |k, v|
       vars["#{k}.total"] = v['total']
       vars["#{k}.unique"] = v['unique']
-      # TODO: add aggs and counts
     end
+
+    # aggs
+    daily_stat.aggs.each do |k, v|
+      vars["#{k}.min"] = v['min']
+      vars["#{k}.max"] = v['max']
+      vars["#{k}.sum"] = sum =  v['sum']
+
+      cnt = v['count']
+      vars["#{k}.average"] = sum.to_f / cnt
+    end
+
     ev = Gt2::Evaluator.new(formula)
     ev.evaluate_with(vars) do |name|
       0

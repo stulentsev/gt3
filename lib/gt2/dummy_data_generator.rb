@@ -14,6 +14,18 @@ class Gt2::DummyDataGenerator
         es.save
       end
 
+      rand(20..30).times do
+        es = EventSaver.new(time: d, event: 'earn xp', user_id: rand(100), app_id: app_id, value: rand(1000))
+        es.save
+      end
+
+      rand(30..40).times do
+        options = %w[menu notifications ad_1 catalog recommended]
+
+        es = EventSaver.new(time: d, event: 'referrer', user_id: rand(100), app_id: app_id, value: options.sample)
+        es.save
+      end
+
       EventUniquesWorker.new.perform(app_id: app_id, time: d.to_s)
       MinMaxWorker.new.perform(app_id: app_id, time: d.to_s)
       AuWorker::Daily.new.perform(app_id: app_id, time: d.to_s)
