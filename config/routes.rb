@@ -3,8 +3,7 @@ Gt2::Application.routes.draw do
   post  'logout' => 'sessions#destroy'
   post  "sessions/create"
 
-  get   "users/edit"
-  post  "users/update"
+  patch  "users/:id", as: :user, controller: :users, action: :update
 
   get   'heartbeat' => 'heartbeat#index'
 
