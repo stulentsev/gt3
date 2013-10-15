@@ -57,7 +57,8 @@ module ApplicationHelper
   end
 
   def git_version
-    rev_filename = File.join(Rails.root, 'REVISION')
+    root = '/var/www/gt2/current'
+    rev_filename = File.join(root, 'REVISION')
     if File.exists?(rev_filename)
       File.read(rev_filename)
     else
