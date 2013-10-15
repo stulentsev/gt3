@@ -18,6 +18,8 @@ ru:
   messages:
     charts:
       not_found: "Нет графиков (пока)"
+    users:
+      updated: "Данные сохранены"
 
   apps:
     new:

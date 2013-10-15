@@ -1,0 +1,8 @@
+= simple_form_for @user, :html => { :class => 'form-horizontal' } do |f|
+  = f.error_notification
+
+  = f.input :name
+  = f.input :api_key, input_html: {class: 'input-xlarge'}
+
+  #form-actions
+    = f.submit nil, :class => 'btn btn-primary'
