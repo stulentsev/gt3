@@ -3,8 +3,6 @@ Gt2::Application.routes.draw do
   post  'logout' => 'sessions#destroy'
   post  "sessions/create"
 
-  patch  "users/:id", as: :user, controller: :users, action: :update
-
   get   'heartbeat' => 'heartbeat#index'
 
   get 'cronworker/schedule_dau'
@@ -14,6 +12,7 @@ Gt2::Application.routes.draw do
 
   namespace :api do
     resources :events, only: [:create]
+    resources :stats, only: [:index]
   end
 
   resources :apps do
@@ -23,6 +22,7 @@ Gt2::Application.routes.draw do
   resources :charts
 
   get 'profile' => 'users#profile'
+  patch  "users/:id", as: :user, controller: :users, action: :update
 
   root  'users#profile'
 

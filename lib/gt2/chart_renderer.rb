@@ -15,9 +15,9 @@
 #      }
 #    ]
 class Gt2::ChartRenderer
-  def initialize(chart)
+  def initialize(chart, options = {})
     @chart = chart
-    @data = fetch_data
+    @data = fetch_data(options)
   end
 
   attr_reader :chart
@@ -42,8 +42,10 @@ class Gt2::ChartRenderer
 
   private
   # returns data sorted chronologically
-  def fetch_data
-    DailyStat.last_30(chart.app.id).asc(:_id).to_a
+  def fetch_data(options = {})
+    ndays = options[:ndays] || 30
+
+    DailyStat.last_n(ndays, chart.app.id).asc(:_id).to_a
   end
 
   def evaluate_formula(formula, daily_stat)
