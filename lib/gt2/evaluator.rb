@@ -24,9 +24,9 @@ class Gt2::Evaluator
     end
   end
 
-  def evaluate_with(values)
+  def evaluate_with(values, &block)
     begin
-      unsafe_evaluate_with(values)
+      unsafe_evaluate_with(values, &block)
     rescue Gt2::Api::Errors::NotFoundError
       raise
     rescue => ex
@@ -46,7 +46,7 @@ class Gt2::Evaluator
     (%w{unique total sum average}.include?(word))
   end
 
-  def unsafe_evaluate_with(values)
+  def unsafe_evaluate_with(values, &block)
     replaced = Gt2::NameScanner.new.call(formula).reduce(formula) do |replaced, name|
       replacement = if is_number?(name)
                       name
@@ -54,8 +54,8 @@ class Gt2::Evaluator
                       stripped_name = Gt2::Utilities.strip_brackets(name)
                       val = values[stripped_name]
 
-                      val ||= if block_given?
-                                yield stripped_name
+                      val ||= if block
+                                block.call(stripped_name)
                               else
                                 raise Gt2::Api::Errors::NotFoundError.new("Can not find value for variable #{stripped_name.inspect}") unless val
                               end
