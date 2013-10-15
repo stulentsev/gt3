@@ -84,8 +84,44 @@ class Gt2::ChartRenderer
   end
 
   def expand_lines(lines_obj)
-    return lines_obj if lines_obj.is_kind_of?(Array)
+    case lines_obj
+    when Array
+      lines_obj
+    when String
+      expand_lines_from_string(lines_obj)
+    else
+      raise "Unrecognized lines_format: #{lines_obj.inspect}"
+    end
+  end
 
-    # movie
+  def expand_lines_from_string(lines_helper)
+    event_name, function, num = lines_helper.split(/[\.\(\)]/)
+    event_name = Gt2::Utilities.strip_brackets(event_name)
+    num = num.to_i
+
+    subeevent_names = name_subset(event_name, function, num)
+
+    subeevent_names.map do |subname|
+      {
+        'name' => subname,
+        'formula' => "[#{event_name}.#{subname}.total]",
+      }
+    end
+  end
+
+  def name_subset(event, function, num)
+    ds = @data.last
+    return [] unless ds && ds.counts[event]
+
+    subnames_with_counts = ds.counts[event].map { |k, v| [k, v['total']] }.sort_by { |_, b| b }.map(&:first)
+
+    case function
+    when 'top'
+      subnames_with_counts.last(num)
+    when 'bottom'
+      subnames_with_counts.first(num)
+    else
+      raise "Undefined function #{function.inspect} for lines_helper"
+    end
   end
 end
