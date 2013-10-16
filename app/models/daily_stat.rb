@@ -7,6 +7,7 @@ class DailyStat
   field :stats, type: Hash, default: {}
   field :counts, type: Hash, default: {}
   field :aggs, type: Hash, default: {}
+  field :system, type: Hash, default: {}
 
   scope :today_stat, ->(app_id) { where(_id: "#{app_id}_#{Time.now.compact}") }
   scope :last_n, ->(n, app_id) {

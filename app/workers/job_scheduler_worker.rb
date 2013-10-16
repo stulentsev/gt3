@@ -1,4 +1,4 @@
-class UniqueFlushScheduler
+class JobSchedulerWorker
   include Sidekiq::Worker
   include Gt2::Worker
   include Sidetiq::Schedulable
@@ -11,6 +11,7 @@ class UniqueFlushScheduler
     schedule_for_each_app AuWorker::Monthly
     schedule_for_each_app EventUniquesWorker
     schedule_for_each_app MinMaxWorker
+    schedule_for_each_app DsInitWorker
   end
 
 
