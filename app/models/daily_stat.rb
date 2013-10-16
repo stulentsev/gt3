@@ -17,6 +17,7 @@ class DailyStat
     where(:_id.gte => first_id, :_id.lte => today_id)
   }
 
+
   def self.update_stats(id, updates)
     return if updates.empty?
 
@@ -66,6 +67,10 @@ class DailyStat
   end
 
   private
+  def set_empty_hashes
+
+  end
+
   def today_record?
     _id =~ /.*_#{Time.now.compact}/
   end

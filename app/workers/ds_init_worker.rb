@@ -16,11 +16,7 @@ class DsInitWorker
   def prepare_update_opts(app_id, time)
     id = "#{app_id}_#{time.compact}"
 
-    defaults = DailyStat.new.attributes.except('_id')
-
-    opts = { :$setOnInsert => defaults,
-             :$set         => { app_id: app_id.to_s, time: time.compact }
-    }
+    opts = { :$set => { app_id: app_id.to_s, date: time.compact } }
 
     [id, opts]
   end
