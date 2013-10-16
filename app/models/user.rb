@@ -8,10 +8,19 @@ class User
   validates_presence_of :email, :name
   validates_presence_of :password, :on => :create
 
+  before_save :init_api_key
+
   field :name
   field :email
   field :password_digest
 
+  field :api_key
+
 
   has_many :apps
+
+  private
+  def init_api_key
+    self.api_key ||= SecureRandom.hex
+  end
 end
