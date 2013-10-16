@@ -26,6 +26,8 @@ gem 'sidekiq', '~> 2.14'
 gem 'sidetiq' # recurring jobs
 gem 'sinatra'
 
+gem 'exceptional'
+
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false
