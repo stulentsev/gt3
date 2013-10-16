@@ -1,4 +1,4 @@
-class UniqueFlushScheduler
+class JobSchedulerWorker
   include Sidekiq::Worker
   include Gt2::Worker
   include Sidetiq::Schedulable
@@ -7,6 +7,8 @@ class UniqueFlushScheduler
   recurrence { minutely }
 
   def perform(_at, _last)
+    schedule_for_each_app DsInitWorker
+
     schedule_for_each_app AuWorker::Daily
     schedule_for_each_app AuWorker::Monthly
     schedule_for_each_app EventUniquesWorker

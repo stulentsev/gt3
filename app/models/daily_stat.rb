@@ -7,6 +7,7 @@ class DailyStat
   field :stats, type: Hash, default: {}
   field :counts, type: Hash, default: {}
   field :aggs, type: Hash, default: {}
+  field :system, type: Hash, default: {}
 
   scope :today_stat, ->(app_id) { where(_id: "#{app_id}_#{Time.now.compact}") }
   scope :last_n, ->(n, app_id) {
@@ -15,6 +16,7 @@ class DailyStat
     today_id = "#{app_id}_#{Time.now.compact}"
     where(:_id.gte => first_id, :_id.lte => today_id)
   }
+
 
   def self.update_stats(id, updates)
     return if updates.empty?
@@ -65,6 +67,10 @@ class DailyStat
   end
 
   private
+  def set_empty_hashes
+
+  end
+
   def today_record?
     _id =~ /.*_#{Time.now.compact}/
   end

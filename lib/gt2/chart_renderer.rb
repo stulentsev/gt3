@@ -24,7 +24,7 @@ class Gt2::ChartRenderer
 
   def categories
     # get a list of x-points from daily stats (dates)
-    @data.map(&:date)
+    @data.map{|ds| ds.date || 'N/A' }
   end
 
   def result
