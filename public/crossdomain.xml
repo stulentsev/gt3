@@ -1,0 +1,4 @@
+<cross-domain-policy>
+  <allow-access-fro secure="false"/>
+  <allow-http-request-headers-from domain="*" headers="*"/>
+</cross-domain-policy>
