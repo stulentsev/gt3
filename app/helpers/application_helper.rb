@@ -22,7 +22,7 @@ module ApplicationHelper
   end
 
   def display_sidebar(link_groups)
-    return '' if link_groups.empty?
+    return '' if link_groups.blank?
 
     content_tag(:div, class: 'span3') do
       content_tag(:div, class: 'well sidebar-nav') do

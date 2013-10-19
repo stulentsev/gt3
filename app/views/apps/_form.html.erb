@@ -4,6 +4,7 @@
   <%= f.hidden_field :user_id, value: @app.user_id || current_user.id %>
 
   <%= f.input :name %>
+  <%= f.input :id, readonly: true %>
   <%= f.input :app_key %>
 
   <%= render partial: 'charts', object: @app.charts %>
