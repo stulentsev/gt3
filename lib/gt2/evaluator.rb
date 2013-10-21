@@ -1,9 +1,14 @@
 class Gt2::Evaluator
-  def initialize(formula = nil)
+  def initialize(formula = nil, options = {})
     self.formula = formula || ''
+    @prefer_current = options[:prefer_current]
   end
 
   attr_accessor :formula
+
+  def prefer_current?
+    @prefer_current
+  end
 
   def used_names
     Gt2::NameScanner.new.call(formula).map do |full_name|
@@ -15,7 +20,7 @@ class Gt2::Evaluator
     # scan for valid suffixes
     names = Gt2::NameScanner.new.call(formula)
 
-    values = Hash[names.map{|n| [Gt2::Utilities.strip_brackets(n), 1]}]
+    values = Hash[names.map { |n| [Gt2::Utilities.strip_brackets(n), 1] }]
     begin
       unsafe_evaluate_with(values)
       true
@@ -30,6 +35,7 @@ class Gt2::Evaluator
     rescue Gt2::Api::Errors::NotFoundError
       raise
     rescue => ex
+      puts ex
       Rails.logger.warn ex
       0
     end
@@ -48,20 +54,7 @@ class Gt2::Evaluator
 
   def unsafe_evaluate_with(values, &block)
     replaced = Gt2::NameScanner.new.call(formula).reduce(formula) do |replaced, name|
-      replacement = if is_number?(name)
-                      name
-                    else
-                      stripped_name = Gt2::Utilities.strip_brackets(name)
-                      val = values[stripped_name]
-
-                      val ||= if block
-                                block.call(stripped_name)
-                              else
-                                raise Gt2::Api::Errors::NotFoundError.new("Can not find value for variable #{stripped_name.inspect}") unless val
-                              end
-
-                      val.to_f
-                    end
+      replacement = get_replacement(name, values, block)
       replaced.gsub(name, replacement.to_s)
     end
 
@@ -70,5 +63,34 @@ class Gt2::Evaluator
     return 0 if res.nan? || res == 1.0 / 0
     res == res.to_i ? res.to_i : res
 
+  end
+
+  def get_replacement(name, values, block)
+    if is_number?(name)
+      name
+    else
+      stripped_name = massage_name(Gt2::Utilities.strip_brackets(name))
+      val           = values[stripped_name] || handle_missing_value(stripped_name, block)
+      val.to_f
+    end
+  end
+
+  def handle_missing_value(stripped_name, block)
+    if block
+      block.call(stripped_name)
+    else
+      raise Gt2::Api::Errors::NotFoundError.new("Can not find value for variable #{stripped_name.inspect}")
+    end
+  end
+
+  # transforms name like open_rooms.current(max) to open_rooms.current
+  def massage_name(name)
+    tr = Gt2::NameTransformer.new(name)
+
+    if prefer_current?
+      tr.current
+    else
+      tr.source_attribute
+    end
   end
 end

@@ -9,6 +9,8 @@ describe Gt2::NameScanner do
           '[%visit]',
           '[session-count]',
           '[my first metric]',
+          '[my first metric.max]',
+          '[my first metric.current(max)]',
     ]
 
     ff.each do |f|

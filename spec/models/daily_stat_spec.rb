@@ -70,4 +70,14 @@ describe DailyStat do
       ds.subvalue_total_count_for(event, subval).should == 5
     end
   end
+
+  describe '#today?' do
+    it 'is true for today' do
+      DailyStat.new(date: Time.now.compact).today?.should be_true
+    end
+
+    it 'is not true for yesterday' do
+      DailyStat.new(date: 1.day.ago.compact).today?.should be_false
+    end
+  end
 end

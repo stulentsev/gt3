@@ -31,6 +31,10 @@ class DailyStat
     end
   end
 
+  def today?
+    Date.parse(date).today?
+  end
+
   def total_count_for(event)
     stats.fetch_path(event, :total)
   end
