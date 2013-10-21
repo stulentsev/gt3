@@ -69,7 +69,7 @@ class RedisWrapper
 
   def get_current_value(app_id, event, time = self.time)
     k = keyname_for_current_value(app_id, event, time)
-    redis.get(k, value)
+    redis.get(k)
   end
 
   def set_current_value(app_id, event, value, time = self.time)
