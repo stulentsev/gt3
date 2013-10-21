@@ -1,5 +1,11 @@
 class ChartsController < InheritedResources::Base
 
+  def new
+    new! do
+      @events = []
+    end
+  end
+
   def edit
     edit! do
       @events = @chart.app.app_events.map(&:name)
