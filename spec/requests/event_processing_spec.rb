@@ -4,6 +4,8 @@ describe "Collector" do
   it 'accepts events and puts them to background queue' do
     app = create :app
 
+    SaverWorker.jobs.count.should == 0
+
     post '/api/events', app_id: app.id, token: app.app_key, event: 'load app', user_id: SecureRandom.hex
     SaverWorker.jobs.count.should == 1
 

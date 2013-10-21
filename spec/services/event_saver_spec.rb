@@ -106,9 +106,9 @@ describe EventSaver do
         it 'creates subevent' do
           expect {
             subject.save
-          }.to change{AppEvent.count}.from(0).to(2)
+          }.to change{AppEvent.unscoped.count}.from(0).to(2)
 
-          ae = AppEvent.last
+          ae = AppEvent.unscoped.last
           ae.id.should == "#{app.id}:loadApp:some subvalue"
           ae.name.should == 'loadApp'
           ae.value.should == 'some subvalue'

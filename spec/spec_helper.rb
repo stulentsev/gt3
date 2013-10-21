@@ -16,31 +16,17 @@ RSpec.configure do |config|
   config.filter_run :focus => true
   config.run_all_when_everything_filtered = true
 
-  # ## Mock Framework
-  #
-  # If you prefer to use mocha, flexmock or RR, uncomment the appropriate line:
-  #
-  # config.mock_with :mocha
-  # config.mock_with :flexmock
-  # config.mock_with :rr
   config.mock_with :rspec do |configuration|
     configuration.syntax = [:expect, :should]
   end
 
-  # Clean/Reset Mongoid DB prior to running each test.
   config.before(:each) do
     Mongoid::Sessions.default.collections.select {|c| c.name !~ /system/ }.each(&:drop)
     Rails.configuration.redis_wrapper.redis.flushdb
+
+    Sidekiq::Testing.fake!
+    Sidekiq::Worker.clear_all
   end
 
-  # If true, the base class of anonymous controllers will be inferred
-  # automatically. This will be the default behavior in future versions of
-  # rspec-rails.
-  #config.infer_base_class_for_anonymous_controllers = false
-
-  # Run specs in random order to surface order dependencies. If you find an
-  # order dependency and want to debug it, you can fix the order by providing
-  # the seed, which is printed after each run.
-  #     --seed 1234
   config.order = "random"
 end

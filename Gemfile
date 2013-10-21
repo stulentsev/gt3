@@ -40,6 +40,7 @@ gem 'redis'
 
 # Use ActiveModel has_secure_password
 gem 'bcrypt-ruby', '~> 3.0.0'
+gem 'rack-cors', :require => 'rack/cors'
 
 group :development do
   gem 'pry'
