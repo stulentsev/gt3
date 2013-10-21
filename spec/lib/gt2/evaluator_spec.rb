@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe Gt2::Evaluator do
   it 'gets names used in a formula' do
-    ev = Gt2::Evaluator.new '[load] / [load.unique] + [revenue.sum]'
-    ev.used_names.should =~ %w{load revenue}
+    ev = Gt2::Evaluator.new '[load] / [load.unique] + [revenue.sum] + [open_rooms.current(max)]'
+    ev.used_names.should =~ %w{load revenue open_rooms}
   end
 
   context 'validation' do
@@ -18,7 +18,7 @@ describe Gt2::Evaluator do
 
       ff.each do |f|
         it "allows \"#{f}\"" do
-          ev = Gt2::Evaluator.new f
+          ev = Gt2::Evaluator.new(f)
           ev.should be_valid_formula
         end
       end
@@ -34,7 +34,7 @@ describe Gt2::Evaluator do
 
       ff.each do |f|
         it "does not allow \"#{f}\"" do
-          ev = Gt2::Evaluator.new f
+          ev = Gt2::Evaluator.new(f)
           ev.should_not be_valid_formula
         end
       end
@@ -64,6 +64,24 @@ describe Gt2::Evaluator do
     end
   end
 
+  it 'prefers current values if the flag is on' do
+    ev = Gt2::Evaluator.new('[load.max] + [load.current(max)] + [load.current(min)]', prefer_current: true)
+    values = {'load.max' => 1, 'load.current' => 7, 'load.min' => 3}
+
+    ev.evaluate_with(values).should == 15
+  end
+
+  it 'does not prefer current values if the flag is off' do
+    ev = Gt2::Evaluator.new('[load.max] + [load.current(max)] + [load.current(min)]', prefer_current: false)
+    values = {'load.max' => 1, 'load.current' => 7, 'load.min' => 3}
+    ev.evaluate_with(values).should == 5
+  end
+
+  it 'does not prefer current values if the flag is missing' do
+    ev = Gt2::Evaluator.new('[load.max] + [load.current(max)] + [load.current(min)]')
+    values = {'load.max' => 1, 'load.current' => 7, 'load.min' => 3}
+    ev.evaluate_with(values).should == 5
+  end
 
   it 'raises error if value for a name was not provided' do
     expect {

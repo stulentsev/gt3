@@ -148,6 +148,11 @@ describe EventSaver do
           Rails.configuration.redis_wrapper.should_receive(:set_max_value).with(app.id, event, '2', anything)
           subject.save
         end
+
+        it 'updates current value in redis' do
+          Rails.configuration.redis_wrapper.should_receive(:set_current_value).with(app.id, event, '2', anything)
+          subject.save
+        end
       end
     end
   end
