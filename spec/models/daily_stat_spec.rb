@@ -71,13 +71,14 @@ describe DailyStat do
     end
   end
 
-  describe '#today?' do
+  describe '#today_record?' do
     it 'is true for today' do
-      DailyStat.new(date: Time.now.compact).today?.should be_true
+      DailyStat.new(id: doc_id).today_record?.should be_true
     end
 
     it 'is not true for yesterday' do
-      DailyStat.new(date: 1.day.ago.compact).today?.should be_false
+      date = 1.day.ago
+      DailyStat.new(date: doc_id).today_record?.should be_false
     end
   end
 end

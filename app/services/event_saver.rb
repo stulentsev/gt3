@@ -23,6 +23,7 @@ class EventSaver
 
       # Update redis cache for min/max values (to be flushed later in background)
       update_minmax_caches if numeric?
+      update_current_value if numeric?
 
       update_dau
       update_mau
@@ -101,6 +102,10 @@ class EventSaver
   def update_minmax_caches
     Rails.configuration.redis_wrapper.set_min_value(app_id, event, value, time)
     Rails.configuration.redis_wrapper.set_max_value(app_id, event, value, time)
+  end
+
+  def update_current_value
+    Rails.configuration.redis_wrapper.set_current_value(app_id, event, value, time)
   end
 
   def update_dau

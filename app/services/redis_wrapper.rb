@@ -67,6 +67,16 @@ class RedisWrapper
     redis.eval max_value_script, [k], [value]
   end
 
+  def get_current_value(app_id, event, time = self.time)
+    k = keyname_for_current_value(app_id, event, time)
+    redis.get(k, value)
+  end
+
+  def set_current_value(app_id, event, value, time = self.time)
+    k = keyname_for_current_value(app_id, event, time)
+    redis.setex(k, 1.day, value)
+  end
+
   def time
     Time.now
   end
@@ -115,5 +125,9 @@ class RedisWrapper
 
   def keyname_for_max_value(app_id, event, time)
     "max_value:#{app_id}:#{event}:#{time.compact}"
+  end
+
+  def keyname_for_current_value(app_id, event, time)
+    "current_value:#{app_id}:#{event}:#{time.compact}"
   end
 end

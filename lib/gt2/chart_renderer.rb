@@ -75,6 +75,9 @@ class Gt2::ChartRenderer
 
       cnt                  = v['count']
       vars["#{k}.average"] = sum.to_f / cnt
+
+      cur = daily_stat.current_for(k)
+      vars["#{k}.current"] = cur if cur
     end
   end
 
