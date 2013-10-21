@@ -55,7 +55,7 @@ class Gt2::ChartRenderer
 
     vars = v1.merge(v2).merge(v3)
 
-    ev = Gt2::Evaluator.new(formula)
+    ev = Gt2::Evaluator.new(formula, prefer_current: daily_stat.today?)
     ev.evaluate_with(vars) { 0 } # return 0 for missing values
   end
 
@@ -75,6 +75,9 @@ class Gt2::ChartRenderer
 
       cnt                  = v['count']
       vars["#{k}.average"] = sum.to_f / cnt
+
+      cur = daily_stat.current_for(k)
+      vars["#{k}.current"] = cur if cur
     end
   end
 

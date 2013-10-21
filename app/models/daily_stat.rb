@@ -66,12 +66,20 @@ class DailyStat
     aggs.fetch_path(event, :max)
   end
 
-  private
-  def set_empty_hashes
-
+  def current_for(event)
+    if today_record?
+      Rails.configuration.redis_wrapper.get_current_value(app_id, event, Date.parse(date))
+    else
+      nil
+    end
   end
 
   def today_record?
     _id =~ /.*_#{Time.now.compact}/
+  end
+
+  private
+  def set_empty_hashes
+
   end
 end
