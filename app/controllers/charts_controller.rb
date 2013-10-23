@@ -40,7 +40,7 @@ class ChartsController < InheritedResources::Base
               I18n.t('labels.links') => [
                 {
                   name: I18n.t('labels.app'),
-                  href: edit_app_path(@app)
+                  href: edit_app_path(chart.app)
                 },
                 {
                   name: I18n.t('labels.show_chart'),
