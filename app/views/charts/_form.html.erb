@@ -1,5 +1,5 @@
 <% content_for(:sidebar) do %>
-  <%= display_sidebar(I18n.t('labels.available_events') => @events.map{|e| {name: e, href: ''}}) %>
+  <%= display_sidebar(@link_groups) %>
 <% end %>
 
 <%= simple_form_for(@chart, html: {class: 'form-horizontal' }) do |f| %>
