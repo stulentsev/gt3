@@ -1,3 +1,11 @@
 // Place all the styles related to the Stats controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+#examples {
+  display: none;
+}
+
+#chart_container {
+  margin-bottom: 20px;
+}
