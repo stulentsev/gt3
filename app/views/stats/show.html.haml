@@ -1,6 +1,6 @@
 
 - content_for(:sidebar) do
-  = display_sidebar(@link_groups)
+  = display_sidebar(@presenter.sidebar_links)
 
 
 :javascript
@@ -16,11 +16,11 @@
               href: 'http://tech.tulentsev.com'
           },
           title: {
-              text: #{ @chart.name.to_json },
+              text: #{ @presenter.chart.name.to_json },
               x: -20 //center
           },
           xAxis: {
-              categories: #{ format_dates(@categories).to_json },
+              categories: #{ @presenter.categories.to_json },
               tickInterval: 5
           },
           yAxis: {
@@ -39,8 +39,10 @@
               verticalAlign: 'middle',
               borderWidth: 1
           },
-          series: #{ @chart_data.to_json }
+          series: #{ @presenter.chart_data.to_json }
       });
   });
 
 #chart_container
+
+= render partial: 'query_examples'

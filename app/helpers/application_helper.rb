@@ -49,13 +49,6 @@ module ApplicationHelper
     content_tag(:h3, I18n.t('labels.sidebar'))
   end
 
-  def format_dates(arr)
-    arr.map do |elem|
-      d = Date.parse(elem)
-      d.strftime('%b %d')
-    end
-  end
-
   def git_version
     root = '/var/www/gt2/current'
     rev_filename = File.join(root, 'REVISION')
