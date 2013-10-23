@@ -1,14 +1,15 @@
-%h3= t('labels.query_examples.title')
+%a{class: 'btn', id: 'btn_show_examples'}= I18n.t('labels.query_examples.show')
 
-%h4= t('labels.query_examples.send_data')
-<pre>
-curl -X POST #{api_events_url} -d "app_id=#{@presenter.app.id}&token=#{@presenter.app.app_key}&user_id=id1&event=#{@presenter.chart_first_event}"
-</pre>
+#examples
+  %h3= t('labels.query_examples.title')
 
-%h4= t('labels.query_examples.get_data')
+  %h4= t('labels.query_examples.send_data')
+  %pre
+    curl -X POST #{api_events_url} -d "app_id=#{@presenter.app.id}&token=#{@presenter.app.app_key}&user_id=id1&event=#{@presenter.chart_first_event}"
 
-<pre>
-curl "#{api_stats_url}?api_key=#{current_user.api_key}&chart_id=#{@presenter.chart.id}&ndays=30"
-</pre>
+  %h4= t('labels.query_examples.get_data')
+
+  %pre
+    curl "#{api_stats_url}?api_key=#{current_user.api_key}&chart_id=#{@presenter.chart.id}&ndays=30"
 
 
