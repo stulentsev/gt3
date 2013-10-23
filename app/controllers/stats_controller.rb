@@ -31,7 +31,11 @@ class StatsController < ApplicationController
       {
         name: I18n.t('labels.app'),
         href: edit_app_path(@app)
-      }
+      },
+      {
+        name: I18n.t('charts.edit.title'),
+        href: edit_chart_path(@chart)
+      },
     ]
   end
 
