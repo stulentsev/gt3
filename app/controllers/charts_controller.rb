@@ -2,13 +2,14 @@ class ChartsController < InheritedResources::Base
 
   def new
     new! do
-      @events = []
+      app = App.where(_id: params.fetch_path(:chart, :app_id)).first
+      @events = events(app)
     end
   end
 
   def edit
     edit! do
-      @events = @chart.app.app_events.map(&:name)
+      @events = events(@chart.app)
     end
   end
 
@@ -27,5 +28,11 @@ class ChartsController < InheritedResources::Base
   private
   def permitted_params
     params.permit(chart: [:name, :config, :app_id])
+  end
+
+  def events(app)
+    return [] unless app
+
+    app.app_events.map(&:name).sort
   end
 end
