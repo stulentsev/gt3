@@ -2,5 +2,6 @@
 
 FactoryGirl.define do
   factory :app_event do
+    top_level { true }
   end
 end

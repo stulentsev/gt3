@@ -8,6 +8,14 @@ GIT
       origin (~> 1.0)
       tzinfo (~> 0.3.37)
 
+GIT
+  remote: git://github.com/simi/mongoid-paranoia.git
+  revision: b485ed674d749dc8961b9c1d3ca5d52e9e98a5af
+  specs:
+    mongoid-paranoia (0.1)
+      activemodel (~> 4.0.0)
+      mongoid (~> 4.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -269,6 +277,7 @@ DEPENDENCIES
   inherited_resources
   jquery-rails
   mongoid!
+  mongoid-paranoia!
   mongoid-rspec
   pry
   pry-debugger

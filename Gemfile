@@ -36,6 +36,8 @@ end
 
 # Databases
 gem 'mongoid', github: 'mongoid/mongoid'
+gem 'mongoid-paranoia', github: 'simi/mongoid-paranoia'
+
 gem 'redis'
 
 # Use ActiveModel has_secure_password

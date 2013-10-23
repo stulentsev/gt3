@@ -119,9 +119,11 @@ class EventSaver
   def create_app_event
     ae_id = "#{app_id}:#{event}"
 
-    AppEvent.where(_id:    ae_id,
+    ae = AppEvent.where(_id:    ae_id,
                    app_id: app_id,
                    name:   event).first_or_create!
+
+    ae.touch if rand(100) == 0
   end
 
   def create_app_subevent
