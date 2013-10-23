@@ -11,6 +11,7 @@ ru:
     sidebar: "Сайдбар"
     links: "Полезные ссылки"
     available_events: "Доступные ивенты"
+    show_chart: "Посмотреть данные"
 
     edit: "Редактировать"
     delete: "Удалить"
