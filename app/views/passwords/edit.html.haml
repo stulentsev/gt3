@@ -1,0 +1,26 @@
+%h2= t('.title')
+
+= form_tag(password_path, method: :patch, class: 'form-horizontal') do
+  .control-group.required.old_password
+    = label_tag 'old_password', nil, class: 'string required control-label' do
+      %abbr{title: "required"}*
+      = t('.old_password')
+    .controls
+      = password_field_tag 'password[old_password]', nil, class: 'string required', id: 'old_password'
+
+  .control-group.required.password
+    = label_tag 'password', nil, class: 'string required control-label' do
+      %abbr{title: "required"}*
+      = t('.password')
+    .controls
+      = password_field_tag 'password[password]', nil, class: 'string required', id: 'password'
+
+  .control-group.required.password_confirmation
+    = label_tag 'password_confirmation', nil, class: 'string required control-label' do
+      %abbr{title: "required"}*
+      = t('.password_confirmation')
+    .controls
+      = password_field_tag 'password[password_confirmation]', nil, class: 'string required', id: 'password_confirmation'
+
+  .form-actions
+    = submit_tag t('.submit'), class: 'btn btn-primary'

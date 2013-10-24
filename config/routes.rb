@@ -10,6 +10,8 @@ Gt2::Application.routes.draw do
   get 'cronworker/schedule_event_uniques'
   get 'cronworker/schedule_min_max'
 
+  resource :password, only: [:edit, :update]
+
   namespace :api do
     resources :events, only: [:create]
     resources :stats, only: [:index]
