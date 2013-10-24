@@ -8,6 +8,7 @@ class UsersController < ApplicationController
 
   def profile
     @user = current_user
+    @sidebar_links = {I18n.t('labels.links') => [{name: I18n.t('passwords.edit.title'), href: edit_password_path}]}
   end
 
   private

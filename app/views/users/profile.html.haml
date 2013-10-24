@@ -1,3 +1,6 @@
+- content_for(:sidebar) do
+  = display_sidebar(@sidebar_links)
+
 %h1= t('labels.profile_title', username: current_user.name)
 
 = render partial: 'form'

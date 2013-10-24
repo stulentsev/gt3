@@ -38,6 +38,18 @@ ru:
       title: "Новый график"
     edit:
       title: "Редактировать график"
+  passwords:
+    notices:
+      updated: "Пароль успешно изменен"
+      empty: "Все поля должны быть заполнены"
+      not_equal: "Новый пароль и подтверждение не совпадают"
+      current_password_invalid: "Текущий пароль указан неверно"
+    edit:
+      title: "Смена пароля"
+      old_password: "Старый пароль"
+      password: "Новый пароль"
+      password_confirmation: "Подтверждение"
+      submit: "Изменить"
 
   helpers:
     actions: "Действия"
