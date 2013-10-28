@@ -3,7 +3,7 @@ class StatPresenter
 
   def initialize(chart)
     @chart    = chart
-    @renderer = Gt2::ChartRenderer.new(@chart)
+    @renderer = Gt2::ChartRenderer.new(@chart, ndays: ndays)
   end
 
   attr_reader :chart
@@ -25,6 +25,10 @@ class StatPresenter
 
   def app
     chart.app
+  end
+
+  def ndays
+    chart.app.user.ndays
   end
 
   def chart_first_event
