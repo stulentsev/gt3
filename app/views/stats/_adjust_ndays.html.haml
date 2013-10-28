@@ -1,0 +1,5 @@
+= form_tag(ndays_path, method: :patch, class: 'form-inline', id: 'ndays_form') do
+  = t('.title')
+
+  = text_field_tag 'ndays', @presenter.ndays, class: 'string input-small', id: 'adjust_ndays'
+  = button_tag t('.submit'), type: 'submit', class: 'btn'

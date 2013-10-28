@@ -15,6 +15,7 @@ class User
   field :password_digest
 
   field :api_key
+  field :ndays, type: Integer, default: 30
 
 
   has_many :apps

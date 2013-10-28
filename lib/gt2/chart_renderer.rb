@@ -24,7 +24,11 @@ class Gt2::ChartRenderer
 
   def categories
     # get a list of x-points from daily stats (dates)
-    @data.map{|ds| ds.date || 'N/A' }
+    data.map{|ds| ds.date || 'N/A' }
+  end
+
+  def data
+    @data
   end
 
   def result
@@ -35,7 +39,7 @@ class Gt2::ChartRenderer
     expand_lines(chart.lines).map do |line|
       {
         name: line['name'],
-        data: @data.map{|ds| evaluate_formula(line['formula'], ds)},
+        data: data.map{|ds| evaluate_formula(line['formula'], ds)},
       }
     end
   end
@@ -115,7 +119,7 @@ class Gt2::ChartRenderer
   end
 
   def name_subset(event, function, num)
-    ds = @data.last
+    ds = data.last
     return [] unless ds && ds.counts[event]
 
     subnames_with_counts = ds.counts[event].map { |k, v| [k, v['total']] }.sort_by { |_, b| b }.map(&:first)

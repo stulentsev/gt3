@@ -50,6 +50,10 @@ ru:
       password: "Новый пароль"
       password_confirmation: "Подтверждение"
       submit: "Изменить"
+  stats:
+    adjust_ndays:
+      title: "Отображать дней на графике"
+      submit: "Применить"
 
   helpers:
     actions: "Действия"
