@@ -1,0 +1,5 @@
+.span3
+  .well.sidebar-nav
+    %h3= I18n.t('labels.sidebar')
+
+    = render partial: 'sidebar/link_group', collection: link_groups.to_a

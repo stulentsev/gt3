@@ -1,0 +1,7 @@
+- title, rows = link_group
+
+%ul.nav.nav-list
+  %li.nav-header
+    = title
+
+  = render partial: 'sidebar/link', collection: rows
