@@ -3,17 +3,23 @@ class StatPresenter
 
   def initialize(chart)
     @chart    = chart
-    @renderer = Gt2::ChartRenderer.new(@chart, ndays: ndays)
+    @configs = Gt2::ChartConfig.from_chart(@chart)
   end
 
   attr_reader :chart
 
-  def categories
-    format_dates(@renderer.categories)
-  end
-
-  def format_string
-    chart.format_string
+  def each_chart(&block)
+    @configs.each do |conf|
+      renderer = Gt2::ChartRenderer.new(conf, @chart.app, ndays: ndays)
+      proxy = OpenStruct.new(
+          categories: format_dates(renderer.categories),
+          chart_data: renderer.result,
+          uuid: SecureRandom.hex,
+          format_string: conf.format_string,
+          chart_name: chart.name
+      )
+      block.call(proxy)
+    end
   end
 
   def sidebar_links
@@ -21,10 +27,6 @@ class StatPresenter
       I18n.t('labels.links')  => app_related_links,
       I18n.t('labels.charts') => app_chart_links,
     }
-  end
-
-  def chart_data
-    @renderer.result
   end
 
   def app
@@ -36,7 +38,7 @@ class StatPresenter
   end
 
   def chart_first_event
-    line = chart.lines.first
+    line = @configs.first.lines.first
     formula = line['formula']
     ev = Gt2::Evaluator.new(formula)
     ev.used_names.first || 'load_app'
