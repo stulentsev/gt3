@@ -61,7 +61,8 @@ class StatPresenter
   end
 
   def app_chart_links
-    app.charts.map { |c| { name: c.name, href: app_stat_path(app, chart_id: c.id.to_s) } }
+    links = app.charts.map { |c| {name: c.name, href: app_stat_path(app, chart_id: c.id.to_s) } }
+    links.sort_by{|h| h[:name]}
   end
 
 end
