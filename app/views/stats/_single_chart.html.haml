@@ -1,0 +1,46 @@
+:javascript
+  $(function () {
+      $('##{presenter.uuid}').highcharts({
+          plotOptions: {
+            series: {
+              animation: false
+            }
+          },
+          credits: {
+              text: '© Grafix&lt;T&gt;',
+              href: 'http://tech.tulentsev.com'
+          },
+          title: {
+              text: #{ presenter.chart_name.to_json },
+              x: -20 //center
+          },
+          xAxis: {
+              categories: #{ presenter.categories.to_json },
+              tickInterval: 5
+          },
+          yAxis: {
+              title: {
+                  text: false
+              },
+              plotLines: [{
+                  value: 0,
+                  width: 1,
+                  color: '#808080'
+              }]
+          },
+          legend: {
+              borderWidth: 1
+          },
+
+          tooltip: {
+            pointFormat: #{ presenter.format_string.to_json },
+            style: {
+              fontWeight: 'bold'
+            }
+          },
+          series: #{ presenter.chart_data.to_json }
+      });
+  });
+
+
+%div{id: presenter.uuid}}
