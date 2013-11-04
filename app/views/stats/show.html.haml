@@ -36,6 +36,10 @@
           legend: {
               borderWidth: 1
           },
+
+          tooltip: {
+            pointFormat: #{ @presenter.format_string.to_json }
+          },
           series: #{ @presenter.chart_data.to_json }
       });
   });

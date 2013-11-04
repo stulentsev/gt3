@@ -12,6 +12,10 @@ class StatPresenter
     format_dates(@renderer.categories)
   end
 
+  def format_string
+    chart.format_string
+  end
+
   def sidebar_links
     {
       I18n.t('labels.links')  => app_related_links,
