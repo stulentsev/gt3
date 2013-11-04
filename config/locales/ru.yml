@@ -37,7 +37,9 @@ ru:
     new:
       title: "Новый график"
     edit:
-      title: "Редактировать график"
+      edit: "Редактировать график"
+      save: "Сохранить"
+      save_and_view: "Сохранить и посмотреть"
   passwords:
     notices:
       updated: "Пароль успешно изменен"

@@ -12,6 +12,10 @@ class StatPresenter
     format_dates(@renderer.categories)
   end
 
+  def format_string
+    chart.format_string
+  end
+
   def sidebar_links
     {
       I18n.t('labels.links')  => app_related_links,
@@ -54,14 +58,15 @@ class StatPresenter
         href: edit_app_path(app)
       },
       {
-        name: I18n.t('charts.edit.title'),
+        name: I18n.t('charts.edit.edit'),
         href: edit_chart_path(chart)
       },
     ]
   end
 
   def app_chart_links
-    app.charts.map { |c| { name: c.name, href: app_stat_path(app, chart_id: c.id.to_s) } }
+    links = app.charts.map { |c| {name: c.name, href: app_stat_path(app, chart_id: c.id.to_s) } }
+    links.sort_by{|h| h[:name]}
   end
 
 end

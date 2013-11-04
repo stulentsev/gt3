@@ -12,7 +12,8 @@
               hint: link_to(t('labels.docs'), '/pdf/chart_settings_documentation.pdf', target: '_blank') %>
 
   <div class="form-actions">
-    <%= f.submit nil, :class => 'btn btn-primary' %>
+    <%= f.submit I18n.t('charts.edit.save_and_view'), :class => 'btn btn-primary' %>
+    <%= f.submit I18n.t('charts.edit.save'), :class => 'btn btn-primary' %>
     <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
                 chart_return_path(@chart), :class => 'btn' %>
   </div>
