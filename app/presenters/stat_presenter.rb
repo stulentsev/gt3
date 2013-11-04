@@ -54,7 +54,7 @@ class StatPresenter
         href: edit_app_path(app)
       },
       {
-        name: I18n.t('charts.edit.title'),
+        name: I18n.t('charts.edit.edit'),
         href: edit_chart_path(chart)
       },
     ]

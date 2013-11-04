@@ -20,7 +20,16 @@ class ChartsController < InheritedResources::Base
   end
 
   def update
-    update! { edit_app_path(@chart.app) }
+    update! do
+      case params[:commit]
+      when I18n.t("charts.edit.save")
+        edit_app_path(@chart.app)
+      when I18n.t("charts.edit.save_and_view")
+        app_stat_path(@chart.app, chart_id: @chart.id)
+      else
+        raise "unexpected commit: #{params[:commit]}"
+      end
+    end
   end
 
   def destroy
