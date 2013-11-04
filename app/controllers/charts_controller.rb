@@ -1,4 +1,5 @@
 class ChartsController < InheritedResources::Base
+  before_filter :authenticate_user
 
   def new
     new! do
