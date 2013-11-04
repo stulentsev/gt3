@@ -12,11 +12,18 @@ class Chart
   before_save :convert_tabs
 
   def lines
-    yaml = YAML.load(config)
-    yaml['lines']
+    parsed_config["lines"]
+  end
+
+  def format_string
+    parsed_config["format_string"]  || "{point.y}"
   end
 
   private
+  def parsed_config
+    YAML.load(config)
+  end
+
   def convert_tabs
     if config
       config.gsub!("\t", '  ')

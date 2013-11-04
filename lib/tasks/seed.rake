@@ -4,8 +4,8 @@ namespace :users do
     unless User.where(name: 'admin').first
       User.create(name:                  'admin',
                   email:                 'admin@gt2.ru',
-                  password:              'gt2rulez',
-                  password_confirmation: 'gt2rulez')
+                  password:              'foo1foo',
+                  password_confirmation: 'foo1foo')
     end
   end
 end

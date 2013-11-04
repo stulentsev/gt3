@@ -22,31 +22,9 @@ module ApplicationHelper
   end
 
   def display_sidebar(link_groups)
-    return '' if link_groups.blank?
-
-    content_tag(:div, class: 'span3') do
-      content_tag(:div, class: 'well sidebar-nav') do
-        content = sidebar_title
-
-        content + link_groups.map do |title, rows|
-           sidebar_links(title, rows)
-        end.join.html_safe
-      end
+    if link_groups.present?
+      render partial: 'sidebar/show', locals: {link_groups: link_groups}
     end
-  end
-
-  def sidebar_links(title, rows)
-    content_tag(:ul, class: 'nav nav-list') do |c|
-      content = content_tag(:li, class: 'nav-header') { title }
-
-      content + rows.map do |row|
-        content_tag(:li, link_to(row[:name], row[:href]))
-      end.join.html_safe
-    end
-  end
-
-  def sidebar_title
-    content_tag(:h3, I18n.t('labels.sidebar'))
   end
 
   def git_version
