@@ -38,7 +38,10 @@
           },
 
           tooltip: {
-            pointFormat: #{ @presenter.format_string.to_json }
+            pointFormat: #{ @presenter.format_string.to_json },
+            style: {
+              fontWeight: 'bold'
+            }
           },
           series: #{ @presenter.chart_data.to_json }
       });
