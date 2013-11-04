@@ -1,4 +1,5 @@
 class AppsController < InheritedResources::Base
+  before_filter :authenticate_user
 
   def create
     create! { profile_path }
