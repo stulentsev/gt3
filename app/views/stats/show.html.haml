@@ -3,53 +3,10 @@
   = display_sidebar(@presenter.sidebar_links)
 
 
-:javascript
-  $(function () {
-      $('#chart_container').highcharts({
-          plotOptions: {
-            series: {
-              animation: false
-            }
-          },
-          credits: {
-              text: '© Grafix&lt;T&gt;',
-              href: 'http://tech.tulentsev.com'
-          },
-          title: {
-              text: #{ @presenter.chart.name.to_json },
-              x: -20 //center
-          },
-          xAxis: {
-              categories: #{ @presenter.categories.to_json },
-              tickInterval: 5
-          },
-          yAxis: {
-              title: {
-                  text: false
-              },
-              plotLines: [{
-                  value: 0,
-                  width: 1,
-                  color: '#808080'
-              }]
-          },
-          legend: {
-              borderWidth: 1
-          },
-
-          tooltip: {
-            pointFormat: #{ @presenter.format_string.to_json },
-            style: {
-              fontWeight: 'bold'
-            }
-          },
-          series: #{ @presenter.chart_data.to_json }
-      });
-  });
-
-
 = render partial: 'adjust_ndays'
 
-#chart_container
+- @presenter.each_chart do |chart_presenter|
+  = render partial: "single_chart", locals: {presenter: chart_presenter}
+
 
 = render partial: 'query_examples'

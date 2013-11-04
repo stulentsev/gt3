@@ -15,12 +15,13 @@
 #      }
 #    ]
 class Gt2::ChartRenderer
-  def initialize(chart, options = {})
-    @chart = chart
+  def initialize(chart_config, app, options = {})
+    @chart_config = chart_config
+    @app = app
     @data = fetch_data(options)
   end
 
-  attr_reader :chart
+  attr_reader :chart_config, :app
 
   def categories
     # get a list of x-points from daily stats (dates)
@@ -36,7 +37,7 @@ class Gt2::ChartRenderer
     # for each line
     #   for each daily stat
     #     evaluate line
-    expand_lines(chart.lines).map do |line|
+    expand_lines(chart_config.lines).map do |line|
       {
         name: line['name'],
         data: data.map{|ds| evaluate_formula(line['formula'], ds)},
@@ -49,7 +50,7 @@ class Gt2::ChartRenderer
   def fetch_data(options = {})
     ndays = options[:ndays] || 30
 
-    DailyStat.last_n(ndays, chart.app.id).asc(:_id).to_a
+    DailyStat.last_n(ndays, app.id).asc(:_id).to_a
   end
 
   def evaluate_formula(formula, daily_stat)
