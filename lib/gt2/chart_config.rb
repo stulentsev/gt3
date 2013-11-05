@@ -7,7 +7,7 @@ class Gt2::ChartConfig
 
   def initialize(defn)
     @lines = defn["lines"]
-    @format_string = defn["format_string"]
+    @format_string = defn["format_string"] || "{point.y}"
   end
 
   attr_reader :lines, :format_string
