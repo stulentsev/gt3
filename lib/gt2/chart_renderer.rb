@@ -50,7 +50,7 @@ class Gt2::ChartRenderer
   def fetch_data(options = {})
     ndays = options[:ndays] || 30
 
-    DailyStat.last_n(ndays, app.id).asc(:_id).to_a
+    DailyStat.last_n(ndays, app.id).to_a
   end
 
   def evaluate_formula(formula, daily_stat)
