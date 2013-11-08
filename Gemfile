@@ -62,4 +62,5 @@ group :test do
   gem 'fuubar_velocity'
   gem 'guard-rspec'
   gem 'mongoid-rspec'
+  gem 'simplecov', :require => false
 end
