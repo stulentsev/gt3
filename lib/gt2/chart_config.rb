@@ -1,8 +1,6 @@
 class Gt2::ChartConfig
-  def self.from_chart(chart)
-    definitions = defn_ary(YAML.load(chart.config))
-
-    definitions.map{|defn| Gt2::ChartConfig.new(defn)}
+  def self.[](obj)
+    defn_ary(obj).map{|defn| Gt2::ChartConfig.new(defn)}
   end
 
   def initialize(defn)
@@ -13,6 +11,7 @@ class Gt2::ChartConfig
   attr_reader :lines, :format_string
 
   private
+  # we can't just call Array[obj], because it will turn nested hashes to arrays as well.
   def self.defn_ary(obj)
     return obj if obj.is_a?(Array)
     [obj]

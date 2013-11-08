@@ -14,7 +14,7 @@ class DailyStat
     n = n.to_i
     first_id = "#{app_id}_#{n.days.ago.compact}"
     today_id = "#{app_id}_#{Time.now.compact}"
-    where(:_id.gte => first_id, :_id.lte => today_id)
+    where(:_id.gte => first_id, :_id.lte => today_id).asc(:_id)
   }
 
 
@@ -76,10 +76,5 @@ class DailyStat
 
   def today_record?
     _id =~ /.*_#{Time.now.compact}/
-  end
-
-  private
-  def set_empty_hashes
-
   end
 end

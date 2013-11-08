@@ -17,19 +17,19 @@
 class Gt2::ChartRenderer
   def initialize(chart_config, app, options = {})
     @chart_config = chart_config
-    @app = app
-    @data = fetch_data(options)
+    @app          = app
+    @options      = options
   end
 
-  attr_reader :chart_config, :app
+  attr_reader :chart_config, :app, :options
+
+  def data
+    @data ||= fetch_data(options)
+  end
 
   def categories
     # get a list of x-points from daily stats (dates)
-    data.map{|ds| ds.date || 'N/A' }
-  end
-
-  def data
-    @data
+    data.map { |ds| ds.date || 'N/A' }
   end
 
   def result
@@ -39,8 +39,8 @@ class Gt2::ChartRenderer
     #     evaluate line
     expand_lines(chart_config.lines).map do |line|
       {
-        name: line['name'],
-        data: data.map{|ds| evaluate_formula(line['formula'], ds)},
+          name: line['name'],
+          data: data.map { |ds| evaluate_formula(line['formula'], ds) },
       }
     end
   end
@@ -50,88 +50,22 @@ class Gt2::ChartRenderer
   def fetch_data(options = {})
     ndays = options[:ndays] || 30
 
-    DailyStat.last_n(ndays, app.id).asc(:_id).to_a
+    DailyStat.last_n(ndays, app.id).to_a
   end
 
   def evaluate_formula(formula, daily_stat)
-    v1 = common_values(daily_stat)
-    v2 = agg_values(daily_stat)
-    v3 = counted_values(daily_stat)
-
-    vars = v1.merge(v2).merge(v3)
+    vars = prepare_values(daily_stat)
 
     ev = Gt2::Evaluator.new(formula, prefer_current: daily_stat.today_record?)
     ev.evaluate_with(vars) { 0 } # return 0 for missing values
   end
 
-  def counted_values(daily_stat)
-    daily_stat.counts.each_with_object({}) do |(k, cnts), vars|
-      cnts.each do |subvalue, v|
-        vars["#{k}.#{subvalue}.total"] = v['total']
-      end
-    end
+  def prepare_values(daily_stat)
+    definers = [Gt2::CommonValueDefiner, Gt2::AggregateValueDefiner, Gt2::CountedValueDefiner]
+    definers.map{|klass| klass.new.call(daily_stat)}.reduce(&:merge)
   end
 
-  def agg_values(daily_stat)
-    daily_stat.aggs.each_with_object({}) do |(k, v), vars|
-      vars["#{k}.min"] = v['min']
-      vars["#{k}.max"] = v['max']
-      vars["#{k}.sum"] = sum = v['sum']
-
-      cnt                  = v['count']
-      vars["#{k}.average"] = sum.to_f / cnt
-
-      cur = daily_stat.current_for(k)
-      vars["#{k}.current"] = cur if cur
-    end
-  end
-
-  def common_values(daily_stat)
-    daily_stat.stats.each_with_object({}) do |(k, v), vars|
-      vars["#{k}.total"]  = v['total']
-      vars["#{k}.unique"] = v['unique']
-    end
-  end
-
-  def expand_lines(lines_obj)
-    case lines_obj
-    when Array
-      lines_obj
-    when String
-      expand_lines_from_string(lines_obj)
-    else
-      raise "Unrecognized lines_format: #{lines_obj.inspect}"
-    end
-  end
-
-  def expand_lines_from_string(lines_helper)
-    event_name, function, num = lines_helper.split(/[\.\(\)]/)
-    event_name = Gt2::Utilities.strip_brackets(event_name)
-    num = num.to_i
-
-    subeevent_names = name_subset(event_name, function, num)
-
-    subeevent_names.map do |subname|
-      {
-        'name' => subname,
-        'formula' => "[#{event_name}.#{subname}.total]",
-      }
-    end
-  end
-
-  def name_subset(event, function, num)
-    ds = data.last
-    return [] unless ds && ds.counts[event]
-
-    subnames_with_counts = ds.counts[event].map { |k, v| [k, v['total']] }.sort_by { |_, b| b }.map(&:first)
-
-    case function
-    when 'top'
-      subnames_with_counts.last(num)
-    when 'bottom'
-      subnames_with_counts.first(num)
-    else
-      raise "Undefined function #{function.inspect} for lines_helper"
-    end
+  def expand_lines(lines)
+    Gt2::LineExpander.new.call(lines)
   end
 end
