@@ -77,9 +77,4 @@ class DailyStat
   def today_record?
     _id =~ /.*_#{Time.now.compact}/
   end
-
-  private
-  def set_empty_hashes
-
-  end
 end

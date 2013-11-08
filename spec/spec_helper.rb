@@ -11,6 +11,8 @@ require 'sidekiq/testing'
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
+I18n.locale = :ru # because en.yml is lacking
+
 RSpec.configure do |config|
   config.include Mongoid::Matchers
   config.include FactoryGirl::Syntax::Methods # for create(:app) instead of FactoryGirl.create(:app)

@@ -41,61 +41,71 @@ describe Gt2::Evaluator do
     end
   end
 
-  it 'evaluates formula with supplied values' do
-    ev = Gt2::Evaluator.new '[load] / [load.unique]+[revenue.sum]'
-    values = {'load' => 10, 'load.unique' => 3, 'revenue.sum' => 2.1}
 
-    ev.evaluate_with(values).should == 5.43
-  end
+  describe "#evaluate_with" do
+    it 'evaluates formula with supplied values' do
+      ev = Gt2::Evaluator.new '[load] / [load.unique]+[revenue.sum]'
+      values = {'load' => 10, 'load.unique' => 3, 'revenue.sum' => 2.1}
 
-  context "with bracketed syntax" do
-    it 'evaluates formula with supplied values (and system metrics)' do
-      ev = Gt2::Evaluator.new '[session-count] + [load]'
-      values = {'load' => 10, 'session-count' => 3}
-
-      ev.evaluate_with(values).should == 13
+      ev.evaluate_with(values).should == 5.43
     end
 
-    it 'evaluates formula with names that have spaces' do
-      ev = Gt2::Evaluator.new '[my first metric] + [load app.total] + [load]'
-      values = {'load' => 10, 'my first metric' => 4, 'load app.total' => 1}
+    context "with bracketed syntax" do
+      it 'evaluates formula with supplied values (and system metrics)' do
+        ev = Gt2::Evaluator.new '[session-count] + [load]'
+        values = {'load' => 10, 'session-count' => 3}
+
+        ev.evaluate_with(values).should == 13
+      end
+
+      it 'evaluates formula with names that have spaces' do
+        ev = Gt2::Evaluator.new '[my first metric] + [load app.total] + [load]'
+        values = {'load' => 10, 'my first metric' => 4, 'load app.total' => 1}
+
+        ev.evaluate_with(values).should == 15
+      end
+    end
+
+    it 'prefers current values if the flag is on' do
+      ev = Gt2::Evaluator.new('[load.max] + [load.current(max)] + [load.current(min)]', prefer_current: true)
+      values = {'load.max' => 1, 'load.current' => 7, 'load.min' => 3}
 
       ev.evaluate_with(values).should == 15
     end
-  end
 
-  it 'prefers current values if the flag is on' do
-    ev = Gt2::Evaluator.new('[load.max] + [load.current(max)] + [load.current(min)]', prefer_current: true)
-    values = {'load.max' => 1, 'load.current' => 7, 'load.min' => 3}
+    it 'does not prefer current values if the flag is off' do
+      ev = Gt2::Evaluator.new('[load.max] + [load.current(max)] + [load.current(min)]', prefer_current: false)
+      values = {'load.max' => 1, 'load.current' => 7, 'load.min' => 3}
+      ev.evaluate_with(values).should == 5
+    end
 
-    ev.evaluate_with(values).should == 15
-  end
+    it 'does not prefer current values if the flag is missing' do
+      ev = Gt2::Evaluator.new('[load.max] + [load.current(max)] + [load.current(min)] * 1')
+      values = {'load.max' => 1, 'load.current' => 7, 'load.min' => 3}
+      ev.evaluate_with(values).should == 5
+    end
 
-  it 'does not prefer current values if the flag is off' do
-    ev = Gt2::Evaluator.new('[load.max] + [load.current(max)] + [load.current(min)]', prefer_current: false)
-    values = {'load.max' => 1, 'load.current' => 7, 'load.min' => 3}
-    ev.evaluate_with(values).should == 5
-  end
+    it 'raises error if value for a name was not provided' do
+      expect {
+        ev = Gt2::Evaluator.new '[load] / [load.unique] + [revenue.sum]'
+        values = {'load' => 10, 'revenue.sum' => 2.1}
+        ev.evaluate_with(values)
+      }.to raise_error(Gt2::Api::Errors::NotFoundError)
+    end
 
-  it 'does not prefer current values if the flag is missing' do
-    ev = Gt2::Evaluator.new('[load.max] + [load.current(max)] + [load.current(min)]')
-    values = {'load.max' => 1, 'load.current' => 7, 'load.min' => 3}
-    ev.evaluate_with(values).should == 5
-  end
-
-  it 'raises error if value for a name was not provided' do
-    expect {
+    it 'does not raise error if value is missing, but default value block is given' do
       ev = Gt2::Evaluator.new '[load] / [load.unique] + [revenue.sum]'
       values = {'load' => 10, 'revenue.sum' => 2.1}
-      ev.evaluate_with(values)
-    }.to raise_error(Gt2::Api::Errors::NotFoundError)
-  end
 
-  it 'does not raise error if value is missing, but default value block is given' do
-    ev = Gt2::Evaluator.new '[load] / [load.unique] + [revenue.sum]'
-    values = {'load' => 10, 'revenue.sum' => 2.1}
+      res = ev.evaluate_with(values) { 2 }
+      res.should == 7.1
+    end
 
-    res = ev.evaluate_with(values) { 2 }
-    res.should == 7.1
+    it "returns 0 when unexpected exception is raised" do
+      ev = Gt2::Evaluator.new "[some event]"
+      ev.should_receive(:unsafe_evaluate_with).and_raise("this error")
+
+      ev.evaluate_with({}).should == 0
+    end
   end
 end
