@@ -4,7 +4,7 @@ class StatPresenter
   def initialize(chart)
     @chart    = chart
     yaml_config = YAML.load(chart.config)
-    @configs = Gt2::ChartConfig[yaml_config]
+    @configs = Gt2::ChartConfig.get_array(yaml_config)
   end
 
   attr_reader :chart

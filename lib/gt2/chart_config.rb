@@ -1,5 +1,5 @@
 class Gt2::ChartConfig
-  def self.[](obj)
+  def self.get_array(obj)
     defn_ary(obj).map{|defn| Gt2::ChartConfig.new(defn)}
   end
 

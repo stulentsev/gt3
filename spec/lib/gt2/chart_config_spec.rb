@@ -6,9 +6,9 @@ describe Gt2::ChartConfig do
   it { should respond_to :lines }
   it { should respond_to :format_string }
 
-  describe ".[]" do
+  describe ".get_array" do
     it "takes single hash" do
-      cc_ary = Gt2::ChartConfig["lines" => nil, "format_string" => "foo"]
+      cc_ary = Gt2::ChartConfig.get_array("lines" => nil, "format_string" => "foo")
       cc_ary.should have(1).item
 
       first = cc_ary.first
@@ -18,7 +18,7 @@ describe Gt2::ChartConfig do
 
     it "takes array of hashes" do
       arr = [{"lines" => [], "format_string" => "foo"}, {"lines" => nil, "format_string" => "bar"}]
-      cc_ary = Gt2::ChartConfig[arr]
+      cc_ary = Gt2::ChartConfig.get_array(arr)
       cc_ary.should have(2).items
 
       first = cc_ary.first
@@ -31,7 +31,7 @@ describe Gt2::ChartConfig do
     end
 
     it "provides default value for format_string" do
-      cc_ary = Gt2::ChartConfig["lines" => nil]
+      cc_ary = Gt2::ChartConfig.get_array("lines" => nil)
       cc_ary.should have(1).item
 
       first = cc_ary.first
