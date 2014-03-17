@@ -46,7 +46,7 @@ gem 'rack-cors', :require => 'rack/cors'
 
 group :development do
   gem 'pry'
-  gem 'pry-debugger'
+  #gem 'pry-debugger'
   gem 'capistrano'
   gem 'capistrano-ext'
   gem 'quiet_assets'

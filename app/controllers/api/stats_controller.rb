@@ -8,7 +8,7 @@ class Api::StatsController < Api::ApplicationController
 
     options = {ndays: params[:ndays]}
 
-    renderer = Gt2::ChartRenderer.new(chart, options)
+    renderer = Gt2::ChartRenderer.new(chart.config, chart.app, options)
 
     render_json categories: renderer.categories,
                 data: renderer.result
