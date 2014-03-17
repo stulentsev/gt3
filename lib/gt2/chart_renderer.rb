@@ -66,6 +66,6 @@ class Gt2::ChartRenderer
   end
 
   def expand_lines(lines)
-    Gt2::LineExpander.new.call(lines)
+    Gt2::LineExpander.new.call(lines) { data.last.counts }
   end
 end

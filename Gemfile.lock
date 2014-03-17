@@ -46,6 +46,11 @@ GEM
     arel (4.0.0)
     atomic (1.1.14)
     bcrypt-ruby (3.0.1)
+    better_errors (1.1.0)
+      coderay (>= 1.0.0)
+      erubis (>= 2.6.6)
+    binding_of_caller (0.7.2)
+      debug_inspector (>= 0.0.1)
     builder (3.1.4)
     capistrano (2.15.5)
       highline
@@ -66,6 +71,7 @@ GEM
       execjs
     coffee-script-source (1.6.3)
     connection_pool (1.1.0)
+    debug_inspector (0.0.2)
     diff-lcs (1.2.4)
     erubis (2.7.0)
     exceptional (2.0.33)
@@ -258,6 +264,8 @@ PLATFORMS
 
 DEPENDENCIES
   bcrypt-ruby (~> 3.0.0)
+  better_errors
+  binding_of_caller
   capistrano
   capistrano-ext
   coffee-rails (~> 4.0.0)

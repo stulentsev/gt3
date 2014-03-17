@@ -31,7 +31,8 @@ class Gt2::LineExpander
   def name_subset(event, function, num)
     return [] if counted_values.blank?
 
-    subnames_with_counts = counted_values[event].map { |k, v| [k, v["total"]] }.sort_by { |_, b| b }.map(&:first)
+    val = counted_values[event] || {}
+    subnames_with_counts = val.map { |k, v| [k, v["total"]] }.sort_by { |_, b| b }.map(&:first)
 
     case function
       when "top"
