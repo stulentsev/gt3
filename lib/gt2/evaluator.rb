@@ -35,23 +35,12 @@ class Gt2::Evaluator
     rescue Gt2::Api::Errors::NotFoundError
       raise
     rescue => ex
-      puts ex
       Rails.logger.warn ex
       0
     end
   end
 
-  def is_number?(str)
-    !!Float(str)
-  rescue TypeError, ArgumentError
-    false
-  end
-
   private
-  def valid_suffix?(word)
-    (%w{unique total sum average}.include?(word))
-  end
-
   def unsafe_evaluate_with(values, &block)
     replaced = Gt2::NameScanner.new.call(formula).reduce(formula) do |replaced, name|
       replacement = get_replacement(name, values, block)
@@ -66,13 +55,9 @@ class Gt2::Evaluator
   end
 
   def get_replacement(name, values, block)
-    if is_number?(name)
-      name
-    else
-      stripped_name = massage_name(Gt2::Utilities.strip_brackets(name))
-      val           = values[stripped_name] || handle_missing_value(stripped_name, block)
-      val.to_f
-    end
+    stripped_name = massage_name(Gt2::Utilities.strip_brackets(name))
+    val           = values[stripped_name] || handle_missing_value(stripped_name, block)
+    val.to_f
   end
 
   def handle_missing_value(stripped_name, block)

@@ -46,10 +46,12 @@ gem 'rack-cors', :require => 'rack/cors'
 
 group :development do
   gem 'pry'
-  gem 'pry-debugger'
+  #gem 'pry-debugger'
   gem 'capistrano'
   gem 'capistrano-ext'
   gem 'quiet_assets'
+  gem 'better_errors'
+  gem 'binding_of_caller'
 end
 
 group :development, :test do
@@ -62,4 +64,5 @@ group :test do
   gem 'fuubar_velocity'
   gem 'guard-rspec'
   gem 'mongoid-rspec'
+  gem 'simplecov', :require => false
 end

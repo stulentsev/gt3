@@ -2,5 +2,7 @@
 
 FactoryGirl.define do
   factory :chart do
+    sequence(:name) {|x| "chart #{x}"}
+    config 'lines: "0"'
   end
 end
